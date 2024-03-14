@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "567396472986",
+    "project_id": "paradox2k24-9d3a9",
+    "storage_bucket": "paradox2k24-9d3a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567396472986:android:cd78b1b22b01afb1976723",
+        "android_client_info": {
+          "package_name": "com.example.paradox2k24"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567396472986-j8so8gidvluehqn5fk7tm0g28skp1a6b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paradox2k24",
+            "certificate_hash": "75a44f4d802e526ea1fd27b1cb34f1fb07ea84d5"
+          }
+        },
+        {
+          "client_id": "567396472986-hgpd9s6ab555h1c442nnhrf7vtukbg07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ00MPp3yxP7TRagVhI2sFlVt5P4xhyLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567396472986-hgpd9s6ab555h1c442nnhrf7vtukbg07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "567396472986-4o0mrja17ndna37lc1i57ernu3oigo6l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paradox2k24"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567396472986:android:e506e56a16c62d7a976723",
+        "android_client_info": {
+          "package_name": "com.example.paradox_2024"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567396472986-hgpd9s6ab555h1c442nnhrf7vtukbg07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ00MPp3yxP7TRagVhI2sFlVt5P4xhyLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567396472986-hgpd9s6ab555h1c442nnhrf7vtukbg07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "567396472986-4o0mrja17ndna37lc1i57ernu3oigo6l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.paradox2k24"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
