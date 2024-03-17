@@ -1,24 +1,19 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paradox_2024/features/home/screens/home.dart';
+import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
 import 'package:paradox_2024/features/home/timer_bar.dart';
 
-
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class BottomNavBAR extends StatefulWidget {
+  const BottomNavBAR({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<BottomNavBAR> createState() => _BottomNavBARState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  signOut() async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    await _auth.signOut();
-  }
+class _BottomNavBARState extends State<BottomNavBAR> {
+ 
 
   int selectedIndex = 0;
   void updateSelectedVav(int idx) {
@@ -55,16 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
           SafeArea(
             child: Column(
               children: [
-                TimerBar(),
-                Center(
-                  child:
-                      IconButton(onPressed: signOut, icon: Icon(Icons.logout)),
-                ),
-                Container(
-                  // color: Colors.,
-                )
+               HomeScreen(),
               ],
-              
             ),
           ),
         ],
