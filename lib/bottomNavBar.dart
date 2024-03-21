@@ -1,9 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:paradox_2024/features/home/screens/home.dart';
-import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
-import 'package:paradox_2024/features/home/timer_bar.dart';
 
 class BottomNavBAR extends StatefulWidget {
   const BottomNavBAR({super.key});
@@ -38,9 +34,9 @@ class _BottomNavBARState extends State<BottomNavBAR> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Stack(
+      body: const Stack(
         children: [
-          const Positioned.fill(
+          Positioned.fill(
             //
             child: Image(
               image: AssetImage('assets/bg.png'),

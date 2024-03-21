@@ -39,6 +39,7 @@ dependencies:
   sign_in_button: ^3.2.0
   firebase_auth: ^4.17.9
   get: ^4.6.6
+  figma_squircle: ^0.5.3
 
 dev_dependencies:
   flutter_test:

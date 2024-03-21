@@ -24,7 +24,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: BottomNavBAR(),
+      home: const BottomNavBAR(),
+
       // home: StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

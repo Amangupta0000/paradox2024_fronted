@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paradox_2024/features/home/screens/comingsoon.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
+import 'package:figma_squircle/figma_squircle.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -18,13 +19,7 @@ class HomeScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-          child: IconButton(
-            onPressed: signOut,
-            icon: const Icon(Icons.logout),
-          ),
-        ),
-        const SizedBox(height: 200),
+        const SizedBox(height: 400),
         GestureDetector(
           onTap: () {
             Navigator.of(context)
@@ -32,8 +27,16 @@ class HomeScreen extends StatelessWidget {
           },
           child: Container(
             height: 60,
-            width: 100,
-            color: Colors.red,
+            width: 400,
+            decoration: ShapeDecoration(
+              color: Colors.red.withOpacity(0.75),
+              shape: SmoothRectangleBorder(
+                borderRadius: SmoothBorderRadius(
+                  cornerRadius: 30,
+                  cornerSmoothing: 1,
+                ),
+              ),
+            ),
             margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(15),
             child: const Center(
@@ -54,8 +57,16 @@ class HomeScreen extends StatelessWidget {
           },
           child: Container(
             height: 60,
-            width: 100,
-            color: Colors.red,
+            width: 400,
+            decoration: ShapeDecoration(
+              color: Colors.red.withOpacity(0.75),
+              shape: SmoothRectangleBorder(
+                borderRadius: SmoothBorderRadius(
+                  cornerRadius: 30,
+                  cornerSmoothing: 1,
+                ),
+              ),
+            ),
             margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(15),
             child: const Center(
@@ -68,7 +79,8 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
+
       ],
     );
   }
