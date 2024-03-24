@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:paradox_2024/firebase_options.dart';
-import 'package:paradox_2024/sign_in_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: BottomNavBAR(),
+      home: const BottomNavBAR(),
+
       // home: StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

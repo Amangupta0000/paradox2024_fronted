@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           },
           child: Container(
             height: 60,
-            width: 250,
+            width: 300,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(
@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
           },
           child: Container(
             height: 60,
-            width: 250,
+            width: 300,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border: Border.all(

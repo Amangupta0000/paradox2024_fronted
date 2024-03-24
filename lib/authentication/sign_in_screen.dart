@@ -22,7 +22,7 @@ class SignIn extends StatelessWidget {
     }
 
     return Stack(children: <Widget>[
-      Positioned.fill(
+      const Positioned.fill(
         //
         child: Image(
           image: AssetImage('assets/bg.png'),
@@ -39,7 +39,7 @@ class SignIn extends StatelessWidget {
             // icon: Icon(),
             Buttons.google,
             text: "GOOGLE",
-            padding: EdgeInsets.symmetric(horizontal: 100),
+            padding: const EdgeInsets.symmetric(horizontal: 100),
             onPressed: signInWithGoogle,
             shape: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.transparent),
