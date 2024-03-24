@@ -24,16 +24,29 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.logout),
           ),
         ),
-        const SizedBox(height: 200),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 350,
+            child: Image.asset('assets/bootom_nav_bar_icons/score_board.png'),
+          ),
+        ),
         GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (ctx) => const Question_Screen()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const Question_Screen()));
           },
           child: Container(
             height: 60,
-            width: 100,
-            color: Colors.red,
+            width: 250,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: Colors.white,
+                width: 1.5,
+              ),
+              color: Colors.transparent,
+            ),
             margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(15),
             child: const Center(
@@ -41,6 +54,7 @@ class HomeScreen extends StatelessWidget {
                 'LEVEL 1',
                 style: TextStyle(
                   color: Colors.white,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -54,8 +68,15 @@ class HomeScreen extends StatelessWidget {
           },
           child: Container(
             height: 60,
-            width: 100,
-            color: Colors.red,
+            width: 250,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: Colors.white,
+                width: 1.5,
+              ),
+              color: Colors.transparent,
+            ),
             margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(15),
             child: const Center(
@@ -63,6 +84,7 @@ class HomeScreen extends StatelessWidget {
                 'LEVEL 2',
                 style: TextStyle(
                   color: Colors.white,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
