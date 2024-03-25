@@ -40,6 +40,8 @@ dependencies:
   firebase_auth: ^4.17.9
   get: ^4.6.6
   figma_squircle: ^0.5.3
+  flutter_timer_countdown: ^1.0.7
+
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +69,10 @@ flutter:
   assets:
    - assets/
    - assets/bootom_nav_bar_icons/
+  fonts:
+    - family: Hermes
+      fonts:
+        - asset: fonts/Hermes-Regular.otf
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

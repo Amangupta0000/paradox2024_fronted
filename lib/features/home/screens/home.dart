@@ -1,31 +1,60 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paradox_2024/features/home/screens/comingsoon.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
+import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    signOut() async {
-      FirebaseAuth _auth = FirebaseAuth.instance;
-      await _auth.signOut();
-    }
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Center(
-          child: IconButton(
-            onPressed: signOut,
-            icon: const Icon(Icons.logout),
+        const Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 2,
+                child: Text(
+                  'PARADOX',
+                  style: TextStyle(
+                    fontFamily: 'Hermes',
+                    fontSize: 60,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff802C95),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 2,
+                left: 0,
+                child: Text(
+                  'PARADOX',
+                  style: TextStyle(
+                    fontFamily: 'Hermes',
+                    fontSize: 60,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff802C95),
+                  ),
+                ),
+              ),
+              Text(
+                'PARADOX',
+                style: TextStyle(
+                  fontFamily: 'Hermes',
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFFFDE34),
+                ),
+              ),
+            ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(5.0),
           child: SizedBox(
             height: 350,
             child: Image.asset('assets/bootom_nav_bar_icons/score_board.png'),
@@ -90,7 +119,21 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
+        TimerCountdown(
+          format: CountDownTimerFormat.daysHoursMinutesSeconds,
+          endTime: DateTime.now().add(
+            const Duration(
+              days: 17,
+              hours: 9,
+              minutes: 30,
+              seconds: 30,
+            ),
+          ),
+          onEnd: () {
+            print("Timer finished");
+          },
+        ),
       ],
     );
   }
