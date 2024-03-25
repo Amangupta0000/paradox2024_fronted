@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paradox_2024/features/home/screens/comingsoon.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
-import 'package:figma_squircle/figma_squircle.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,23 +18,34 @@ class HomeScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SizedBox(height: 400),
+        Center(
+          child: IconButton(
+            onPressed: signOut,
+            icon: const Icon(Icons.logout),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            height: 350,
+            child: Image.asset('assets/bootom_nav_bar_icons/score_board.png'),
+          ),
+        ),
         GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (ctx) => const Question_Screen()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const Question_Screen()));
           },
           child: Container(
             height: 60,
-            width: 400,
-            decoration: ShapeDecoration(
-              color: Colors.red.withOpacity(0.75),
-              shape: SmoothRectangleBorder(
-                borderRadius: SmoothBorderRadius(
-                  cornerRadius: 30,
-                  cornerSmoothing: 1,
-                ),
+            width: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: Colors.white,
+                width: 1.5,
               ),
+              color: Colors.transparent,
             ),
             margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(15),
@@ -44,6 +54,7 @@ class HomeScreen extends StatelessWidget {
                 'LEVEL 1',
                 style: TextStyle(
                   color: Colors.white,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -57,15 +68,14 @@ class HomeScreen extends StatelessWidget {
           },
           child: Container(
             height: 60,
-            width: 400,
-            decoration: ShapeDecoration(
-              color: Colors.red.withOpacity(0.75),
-              shape: SmoothRectangleBorder(
-                borderRadius: SmoothBorderRadius(
-                  cornerRadius: 30,
-                  cornerSmoothing: 1,
-                ),
+            width: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: Colors.white,
+                width: 1.5,
               ),
+              color: Colors.transparent,
             ),
             margin: const EdgeInsets.all(15),
             padding: const EdgeInsets.all(15),
@@ -74,13 +84,13 @@ class HomeScreen extends StatelessWidget {
                 'LEVEL 2',
                 style: TextStyle(
                   color: Colors.white,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-        ),
-
+        )
       ],
     );
   }
