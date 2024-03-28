@@ -8,6 +8,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime targetDate = DateTime(2024, 4, 12);
+    Duration difference = targetDate.difference(DateTime.now());
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -120,19 +123,35 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        TimerCountdown(
-          format: CountDownTimerFormat.daysHoursMinutesSeconds,
-          endTime: DateTime.now().add(
-            const Duration(
-              days: 17,
-              hours: 9,
-              minutes: 30,
-              seconds: 30,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.grey,
+            ),
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                const Text(
+                  'LEVEL 1 STARTS IN :',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Color(0xFFFFDE34),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                TimerCountdown(
+                  format: CountDownTimerFormat.daysHoursMinutesSeconds,
+                  endTime: DateTime.now().add(difference),
+                  onEnd: () {
+                    print("Timer finished");
+                  },
+                ),
+              ],
             ),
           ),
-          onEnd: () {
-            print("Timer finished");
-          },
         ),
       ],
     );
