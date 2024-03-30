@@ -1,6 +1,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:paradox_2024/authentication/sign_up_screen.dart';
 import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:paradox_2024/firebase_options.dart';
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const BottomNavBAR(),
+      home: const SignUpScreen(),
 
       // home: StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),

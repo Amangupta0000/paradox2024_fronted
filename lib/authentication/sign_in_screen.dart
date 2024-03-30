@@ -52,18 +52,3 @@ class SignIn extends StatelessWidget {
     ]);
   }
 }
-// Scaffold(
-//         appBar: AppBar(title: Text("Paradox")),
-//         body: Center(
-//           child: SizedBox(
-//             height: 40,
-//             child: SignInButton(
-//               Buttons.google,
-//               onPressed: signInWithGoogle,
-//               shape: OutlineInputBorder(
-//                 borderSide: const BorderSide(color: Colors.transparent),
-//                 borderRadius: BorderRadius.circular(20),
-//               ),
-//             ),
-//           ),
-//         ));
