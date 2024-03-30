@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:paradox_2024/features/home/screens/home.dart';
+import 'package:paradox_2024/leaderboardPage.dart';
+import 'package:paradox_2024/prizePage.dart';
+import 'package:paradox_2024/profilePage.dart';
+import 'package:paradox_2024/rulesPage.dart';
 
 class BottomNavBAR extends StatefulWidget {
-  const BottomNavBAR({super.key});
+  const BottomNavBAR({Key? key}) : super(key: key);
 
   @override
   State<BottomNavBAR> createState() => _BottomNavBARState();
 }
 
 class _BottomNavBARState extends State<BottomNavBAR> {
- 
-
   int selectedIndex = 0;
+
   void updateSelectedVav(int idx) {
     if (selectedIndex != idx) {
       setState(() {
@@ -27,28 +30,30 @@ class _BottomNavBARState extends State<BottomNavBAR> {
     'assets/bootom_nav_bar_icons/prize.png',
     'assets/bootom_nav_bar_icons/profile.png',
   ];
-  List body = [];
+
+  List<Widget> pages = [
+    HomeScreen(),
+    leaderboardPage(),
+    rulesPage(),
+    prizePage(),
+    profilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: const Stack(
+      body: Stack(
         children: [
-          Positioned.fill(
-            //
+          const Positioned.fill(
             child: Image(
               image: AssetImage('assets/bg.png'),
               fit: BoxFit.fill,
             ),
           ),
           SafeArea(
-            child: Column(
-              children: [
-               HomeScreen(),
-              ],
-            ),
+            child: pages[selectedIndex], // Display selected page
           ),
         ],
       ),
@@ -60,7 +65,7 @@ class _BottomNavBARState extends State<BottomNavBAR> {
           children: [
             ...List.generate(
               bottomNavBarItemAssetList.length,
-              (index) {
+                  (index) {
                 return GestureDetector(
                   onTap: () {
                     updateSelectedVav(index);
@@ -68,8 +73,9 @@ class _BottomNavBARState extends State<BottomNavBAR> {
                   child: SizedBox(
                     height: height * 0.08,
                     child: Opacity(
-                        opacity: selectedIndex == index ? 1 : 0.5,
-                        child: Image.asset(bottomNavBarItemAssetList[index])),
+                      opacity: selectedIndex == index ? 1 : 0.5,
+                      child: Image.asset(bottomNavBarItemAssetList[index]),
+                    ),
                   ),
                 );
               },
