@@ -42,6 +42,7 @@ dependencies:
   figma_squircle: ^0.5.3
   flutter_timer_countdown: ^1.0.7
   dio: ^5.4.2+1
+  shared_preferences: ^2.2.2
 
 
 dev_dependencies:
