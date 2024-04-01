@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:paradox_2024/features/home/screens/comingsoon.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
@@ -18,37 +19,37 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.all(5.0),
           child: Stack(
             children: [
-              Positioned(
-                top: 0,
-                left: 2,
-                child: Text(
-                  'PARADOX',
-                  style: TextStyle(
-                    fontFamily: 'Hermes',
-                    fontSize: 60,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff802C95),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 2,
-                left: 0,
-                child: Text(
-                  'PARADOX',
-                  style: TextStyle(
-                    fontFamily: 'Hermes',
-                    fontSize: 60,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff802C95),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   top: 0,
+              //   left: 2,
+              //   child: Text(
+              //     'PARADOX',
+              //     style: TextStyle(
+              //       fontFamily: 'Hermes',
+              //       fontSize: 40,
+              //       fontWeight: FontWeight.bold,
+              //       color: Color(0xff802C95),
+              //     ),
+              //   ),
+              // ),
+              // Positioned(
+              //   top: 2,
+              //   left: 0,
+              //   child: Text(
+              //     'PARADOX',
+              //     style: TextStyle(
+              //       fontFamily: 'Hermes',
+              //       fontSize: 60,
+              //       fontWeight: FontWeight.bold,
+              //       color: Color(0xff802C95),
+              //     ),
+              //   ),
+              // ),
               Text(
                 'PARADOX',
                 style: TextStyle(
                   fontFamily: 'Hermes',
-                  fontSize: 60,
+                  fontSize: 45,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFFFDE34),
                 ),
@@ -123,33 +124,35 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.grey,
-            ),
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                const Text(
-                  'LEVEL 1 STARTS IN :',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xFFFFDE34),
-                    fontWeight: FontWeight.bold,
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.grey,
+              ),
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  const Text(
+                    'LEVEL 1 STARTS IN :',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFFFFDE34),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                TimerCountdown(
-                  format: CountDownTimerFormat.daysHoursMinutesSeconds,
-                  endTime: DateTime.now().add(difference),
-                  onEnd: () {
-                    print("Timer finished");
-                  },
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  TimerCountdown(
+                    format: CountDownTimerFormat.daysHoursMinutesSeconds,
+                    endTime: DateTime.now().add(difference),
+                    onEnd: () {
+                      print("Timer finished");
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
