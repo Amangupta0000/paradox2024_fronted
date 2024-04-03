@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox_2024/dio_service.dart';
+import 'package:paradox_2024/features/home/model/profile_model.dart';
+import 'package:paradox_2024/local_data.dart';
 
 class profilePage extends StatefulWidget {
   const profilePage({super.key});
@@ -10,11 +12,27 @@ class profilePage extends StatefulWidget {
 }
 
 class _profilePageState extends State<profilePage> {
+  late ProfileModel profiledata;
+  var loading = false;
   Future<void> getprofile() async {
+    setState(() {
+      loading = true;
+    });
     print("----------------getting profile-----");
-    Response res =
-        await DioService().post('profile/display', {'uid': "22bcs012"});
-    print(res.data);
+    String? name = await SharedData().getname();
+    String? roll = await SharedData().getroll();
+
+    String? uid = "${roll}${name}";
+    print(uid);
+
+    Response res = await DioService().post('profile/display', {'uid': uid});
+    Map<String, dynamic> json = res.data["data"];
+    print(json);
+    profiledata = ProfileModel.fromJson(json);
+    setState(() {
+      loading = false;
+    });
+    print(profiledata);
   }
 
   @override
@@ -39,126 +57,141 @@ class _profilePageState extends State<profilePage> {
             color: Color(0xFFFFDE34),
           ),
         ),
-        Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: height * 0.7,
-                width: double.infinity,
-                child: Image.asset(
-                  'assets/profile_bg.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            Positioned(
-                top: height * 0.119,
-                left: width * 0.4,
-                child: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  radius: 40,
-                )),
-            Positioned(
-                top: height * 0.219,
-                left: width * 0.4,
-                child: Text('Aman Gupta')),
-            Positioned(
-                top: height * 0.29,
-                left: width * 0.25,
-                child: Text(
-                  '#2                Leaderboard',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'Orbitron'),
-                )),
-            Positioned(
-                top: height * 0.4,
-                left: width * 0.3,
-                child: Column(
-                  children: [
-                    Text(
-                      '2',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
+        (loading)
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: height * 0.7,
+                      width: double.infinity,
+                      child: Image.asset(
+                        'assets/profile_bg.png',
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                    Text(
-                      'Level',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
-                    ),
-                  ],
-                )),
-            Positioned(
-                top: height * 0.41,
-                left: width * 0.7,
-                child: Column(
-                  children: [
-                    Text(
-                      '2',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
-                    ),
-                    Text(
-                      'Score',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
-                    ),
-                  ],
-                )),
-            Positioned(
-                top: height * 0.52,
-                left: width * 0.3,
-                child: Column(
-                  children: [
-                    Text(
-                      '2',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
-                    ),
-                    Text(
-                      'Coins',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
-                    ),
-                  ],
-                )),
-            Positioned(
-                top: height * 0.54,
-                left: width * 0.68,
-                child: Column(
-                  children: [
-                    Text(
-                      '2',
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
-                    ),
-                    Text(
-                      'Attempt',
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Orbitron'),
-                    ),
-                  ],
-                )),
-          ],
-        )
+                  ),
+                  Positioned(
+                      top: height * 0.07,
+                      left: width * 0.38,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: height * 0.06,
+                      )),
+                  Positioned(
+                      top: height * 0.19,
+                      // left: width * 0.3,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.2),
+                        child: Text(
+                          profiledata.name,
+                          // "KLaskshya xbdsk",
+                          style: TextStyle(
+                              fontSize: height * 0.027,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Orbitron'),
+                        ),
+                      )),
+                  Positioned(
+                      top: height * 0.29,
+                      left: width * 0.25,
+                      child: Text(
+                        '#2             Leaderboard',
+                        style: TextStyle(
+                            fontSize: height * 0.02,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Orbitron'),
+                      )),
+                  Positioned(
+                      top: height * 0.4,
+                      left: width * 0.29,
+                      child: Column(
+                        children: [
+                          Text(
+                            profiledata.level.toString(),
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                          Text(
+                            'Level',
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                        ],
+                      )),
+                  Positioned(
+                      top: height * 0.4,
+                      left: width * 0.68,
+                      child: Column(
+                        children: [
+                          Text(
+                            profiledata.score.toString(),
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                          Text(
+                            'Score',
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                        ],
+                      )),
+                  Positioned(
+                      top: height * 0.527,
+                      left: width * 0.28,
+                      child: Column(
+                        children: [
+                          Text(
+                            '0',
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                          Text(
+                            'Coins',
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                        ],
+                      )),
+                  Positioned(
+                      top: height * 0.53,
+                      left: width * 0.641,
+                      child: Column(
+                        children: [
+                          Text(
+                            profiledata.attempts.toString(),
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                          Text(
+                            'Attempt',
+                            style: TextStyle(
+                                fontSize: height * 0.018,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'Orbitron'),
+                          ),
+                        ],
+                      )),
+                ],
+              )
       ],
     );
   }
