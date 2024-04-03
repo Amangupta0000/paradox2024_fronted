@@ -206,9 +206,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 Future<String> createUser(String email, String name, String roll) async {
   try {
-    var uid = roll + name;
+    print('------------------user profile creating---------------');
+  //  var uid = roll + name;
     var data = {
-      'uid': uid,
+      'uid': roll,
       "name": name,
       'email': email,
       'roll': roll,
@@ -217,7 +218,9 @@ Future<String> createUser(String email, String name, String roll) async {
       'teamName': null,
       'displayPicture': null
     };
-    Response res = await DioService().post('/auth/createUser', data);
+    print(data) ;
+    Response res = await DioService().post('auth/createUser', data);
+    print(res.data);
     print(res.data);
     return 'Success';
   } catch (e) {
