@@ -48,7 +48,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Form(
                 key: formKey,
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 250,
@@ -90,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 context: context,
                                 barrierDismissible: false,
                                 builder: (context) {
-                                  return PopScope(
+                                  return const PopScope(
                                     canPop: false,
                                     child: Center(
                                       child: CircularProgressIndicator(),
@@ -153,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             side:
                                 const BorderSide(width: 2, color: Colors.grey),
                             borderRadius: BorderRadius.circular(
-                                8.0), // Set the border radius to zero
+                                8.0),
                           ),
                           minimumSize: const Size(double.infinity, 50),
                           backgroundColor:
@@ -172,9 +171,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Already have an account?',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
@@ -183,11 +182,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         TextButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => SignInScreen()));
+                                  builder: (ctx) => const SignInScreen()));
                             },
-                            child: Text(
+                            child: const Text(
                               'Sign Up',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.blue,
                                 fontWeight: FontWeight.w400,
@@ -208,9 +207,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 Future<String> createUser(String email, String name, String roll) async {
   try {
-    var uid = roll + name;
+    print('------------------user profile creating---------------');
+  //  var uid = roll + name;
     var data = {
-      'uid': uid,
+      'uid': roll,
       "name": name,
       'email': email,
       'roll': roll,
@@ -243,9 +243,9 @@ class textField extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.grey[600],
         borderRadius:
-            BorderRadius.circular(30.0), // Adjust the radius as needed
+            BorderRadius.circular(30.0),
         border: Border.all(
-          color: Colors.white, // You can change the border color as needed
+          color: Colors.white,
           width: 2.0,
         ),
       ),
@@ -264,13 +264,13 @@ class textField extends StatelessWidget {
         },
         controller: controller,
         decoration: InputDecoration(
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 20,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
           labelText: labelText,
-          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           border: InputBorder.none,
 
           // border:

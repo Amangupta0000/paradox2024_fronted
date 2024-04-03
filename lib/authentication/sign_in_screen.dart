@@ -48,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Image.asset('assets/paradox_logo.png'),
                   ),
                   const Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'PARADOX',
                       style: TextStyle(
@@ -125,8 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           side: const BorderSide(width: 2, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(
-                              8.0), // Set the border radius to zero
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                         minimumSize: const Size(double.infinity, 50),
                         backgroundColor: const Color.fromRGBO(72, 108, 110, 1),
@@ -144,9 +143,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Create new account',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -155,11 +154,11 @@ class _SignInScreenState extends State<SignInScreen> {
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => SignUpScreen()));
+                                builder: (ctx) => const SignUpScreen()));
                           },
-                          child: Text(
+                          child: const Text(
                             'Sign Up',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               color: Colors.blue,
                               fontWeight: FontWeight.w400,
@@ -213,13 +212,13 @@ class textField extends StatelessWidget {
         },
         controller: controller,
         decoration: InputDecoration(
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 20,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
           labelText: labelText,
-          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           border: InputBorder.none,
 
           // border:
