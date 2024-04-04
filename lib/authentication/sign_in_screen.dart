@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox_2024/authentication/sign_up_screen.dart';
+import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -69,6 +71,17 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return PopScope(
+                                  canPop: false,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              });
                           try {
                             print('-------sign in user------');
 
@@ -82,20 +95,30 @@ class _SignInScreenState extends State<SignInScreen> {
                               'email': emailController.text.trim(),
                               'password': passwordController.text.trim()
                             };
-                            Response response = await dio.post(
-                                'https://paradox-1.onrender.com/api/v1/auth/login',
-                                data: data);
+                            var response = await http.post(
+                                Uri.parse(
+                                    'https://paradox-1.onrender.com/api/v1/auth/login'),
+                                body: data);
 
-                            print(response.data);
-                            var token = response.data['token'];
-                            SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            pref.setString('token', token);
+                            print(response);
+                            // var token = response.data['token'];
+                            // SharedPreferences pref =
+                            //     await SharedPreferences.getInstance();
+                            // pref.setString('token', token);
+
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const BottomNavBAR()),
+                                (route) => false);
+
+                          
                           } catch (e) {
                             print(e);
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(e.toString()),
                             ));
+                            Navigator.pop(context);
                           }
                         }
                       },
@@ -142,7 +165,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           )),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

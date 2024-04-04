@@ -138,6 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Navigator.pop(context);
                               }
                             } catch (e) {
+                              Navigator.pop(context);
                               print(e);
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
@@ -218,9 +219,7 @@ Future<String> createUser(String email, String name, String roll) async {
       'teamName': null,
       'displayPicture': null
     };
-    print(data) ;
     Response res = await DioService().post('auth/createUser', data);
-    print(res.data);
     print(res.data);
     return 'Success';
   } catch (e) {
