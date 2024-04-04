@@ -67,6 +67,22 @@ class _leaderboardPageState extends State<leaderboardPage> {
                 ],
               ),
             ),
+            SizedBox(
+              height: screenHeight * 0.1,
+              child: Image.asset('assets/leaderboard_text.png'),
+            ),
+            Stack(
+              children: [
+                SizedBox(
+                  height: screenHeight * 0.65,
+                  width: double.infinity,
+                  child: Image.asset(
+                    'assets/leaderboard_bg.png',
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
