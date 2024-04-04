@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class rulesPage extends StatelessWidget {
-  const rulesPage({super.key});
+  const rulesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return SizedBox(
       width: double.infinity,
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(5.0),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Stack(
               children: [
                 Positioned(
@@ -20,7 +22,7 @@ class rulesPage extends StatelessWidget {
                     'PARADOX',
                     style: TextStyle(
                       fontFamily: 'Hermes',
-                      fontSize: 60,
+                      fontSize: screenHeight * 0.07,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff802C95),
                     ),
@@ -33,7 +35,7 @@ class rulesPage extends StatelessWidget {
                     'PARADOX',
                     style: TextStyle(
                       fontFamily: 'Hermes',
-                      fontSize: 60,
+                      fontSize: screenHeight * 0.07,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff802C95),
                     ),
@@ -43,7 +45,7 @@ class rulesPage extends StatelessWidget {
                   'PARADOX',
                   style: TextStyle(
                     fontFamily: 'Hermes',
-                    fontSize: 60,
+                    fontSize: screenHeight * 0.07,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFFFDE34),
                   ),
@@ -51,8 +53,8 @@ class rulesPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 50,),
-          const Padding(
+          SizedBox(height: screenHeight * 0.04),
+          Padding(
             padding: EdgeInsets.all(5.0),
             child: Stack(
               children: [
@@ -63,7 +65,7 @@ class rulesPage extends StatelessWidget {
                     'RULES',
                     style: TextStyle(
                       fontFamily: 'Hermes',
-                      fontSize: 45,
+                      fontSize: screenHeight * 0.05,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff802C95),
                     ),
@@ -76,7 +78,7 @@ class rulesPage extends StatelessWidget {
                     'RULES',
                     style: TextStyle(
                       fontFamily: 'Hermes',
-                      fontSize: 45,
+                      fontSize: screenHeight * 0.05,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff802C95),
                     ),
@@ -86,7 +88,7 @@ class rulesPage extends StatelessWidget {
                   'RULES',
                   style: TextStyle(
                     fontFamily: 'Hermes',
-                    fontSize: 45,
+                    fontSize: screenHeight * 0.05,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFFFDE34),
                   ),
@@ -95,9 +97,9 @@ class rulesPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(screenHeight * 0.01),
             child: SizedBox(
-              height: 400,
+              height: screenHeight * 0.5,
               child: Image.asset(
                 'assets/rules.png',
                 fit: BoxFit.contain,
