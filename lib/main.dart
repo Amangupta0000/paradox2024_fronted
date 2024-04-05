@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox_2024/authentication/sign_up_screen.dart';
 import 'package:paradox_2024/bottomNavBar.dart';
-import 'package:paradox_2024/features/home/screens/home.dart';
 import 'package:paradox_2024/firebase_options.dart';
 import 'package:paradox_2024/profilePage.dart';
 import 'package:paradox_2024/splash_screen.dart';

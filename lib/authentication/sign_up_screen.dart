@@ -185,7 +185,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   builder: (ctx) => const SignInScreen()));
                             },
                             child: const Text(
-                              'Sign Up',
+                              'Sign In',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.blue,

@@ -18,7 +18,7 @@ class _profilePageState extends State<profilePage> {
     setState(() {
       loading = true;
     });
-    print("----------------getting profile-----");
+    print("--------getting profile--------");
     String? name = await SharedData().getname();
     String? roll = await SharedData().getroll();
 
@@ -48,13 +48,46 @@ class _profilePageState extends State<profilePage> {
     double width = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        Text(
-          'PARADOX',
-          style: TextStyle(
-            fontFamily: 'Hermes',
-            fontSize: height * 0.06,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFFFDE34),
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 2,
+                child: Text(
+                  'PARADOX',
+                  style: TextStyle(
+                    fontFamily: 'Hermes',
+                    fontSize: height * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff802C95),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 2,
+                left: 0,
+                child: Text(
+                  'PARADOX',
+                  style: TextStyle(
+                    fontFamily: 'Hermes',
+                    fontSize: height * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff802C95),
+                  ),
+                ),
+              ),
+              Text(
+                'PARADOX',
+                style: TextStyle(
+                  fontFamily: 'Hermes',
+                  fontSize: height * 0.07,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFFFDE34),
+                ),
+              ),
+            ],
           ),
         ),
         (loading)

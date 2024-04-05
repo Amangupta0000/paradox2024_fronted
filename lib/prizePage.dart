@@ -5,12 +5,15 @@ class prizePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return SizedBox(
-      width: double.infinity,
+      width: screenWidth,
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.all(5.0),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
             child: Stack(
               children: [
                 Positioned(
@@ -20,7 +23,7 @@ class prizePage extends StatelessWidget {
                     'PARADOX',
                     style: TextStyle(
                       fontFamily: 'Hermes',
-                      fontSize: 60,
+                      fontSize: screenHeight * 0.07,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff802C95),
                     ),
@@ -33,7 +36,7 @@ class prizePage extends StatelessWidget {
                     'PARADOX',
                     style: TextStyle(
                       fontFamily: 'Hermes',
-                      fontSize: 60,
+                      fontSize: screenHeight * 0.07,
                       fontWeight: FontWeight.bold,
                       color: Color(0xff802C95),
                     ),
@@ -43,7 +46,7 @@ class prizePage extends StatelessWidget {
                   'PARADOX',
                   style: TextStyle(
                     fontFamily: 'Hermes',
-                    fontSize: 60,
+                    fontSize: screenHeight * 0.07,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFFFFDE34),
                   ),
@@ -51,18 +54,19 @@ class prizePage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 100,),
+          SizedBox(
+            height: screenHeight * 0.1,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
-              height: 400,
+              height: screenHeight * 0.5,
               child: Image.asset(
                 'assets/prizes.png',
                 fit: BoxFit.contain,
               ),
             ),
           ),
-
         ],
       ),
     );
