@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:paradox_2024/authentication/sign_up_screen.dart';
 import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:paradox_2024/firebase_options.dart';
+import 'package:paradox_2024/profilePage.dart';
+import 'package:paradox_2024/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const BottomNavBAR()
+      home: SplashScreen(),
 
       // home: StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
