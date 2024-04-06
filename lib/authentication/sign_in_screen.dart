@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:paradox_2024/authentication/sign_up_screen.dart';
 import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(children: <Widget>[
         const Positioned.fill(
@@ -36,137 +38,152 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
         SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: formKey,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 250,
-                    child: Image.asset('assets/paradox_logo.png'),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'PARADOX',
-                      style: TextStyle(
-                        fontFamily: 'Hermes',
-                        fontSize: 45,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFFFFDE34),
-                      ),
-                    ),
-                  ),
-                  textField(
-                    controller: emailController,
-                    labelText: "email",
-                  ),
-                  textField(
-                      controller: passwordController, labelText: 'password'),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 10),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (formKey.currentState!.validate()) {
-                          showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return PopScope(
-                                  canPop: false,
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              });
-                          try {
-                            print('-------sign in user------');
-
-                            Dio dio = Dio(BaseOptions(
-                              responseType: ResponseType.json,
-                              headers: {
-                                'Content-Type': 'application/json',
-                              },
-                            ));
-                            var data = {
-                              'email': emailController.text.trim(),
-                              'password': passwordController.text.trim()
-                            };
-                            var response = await http.post(
-                                Uri.parse(
-                                    'https://paradox-1.onrender.com/api/v1/auth/login'),
-                                body: data);
-
-                            print(response);
-                            // var token = response.data['token'];
-                            // SharedPreferences pref =
-                            //     await SharedPreferences.getInstance();
-                            // pref.setString('token', token);
-
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const BottomNavBAR()),
-                                (route) => false);
-
-                          
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(e.toString()),
-                            ));
-                            Navigator.pop(context);
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 2, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(8.0),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 250,
+                          child: Image.asset('assets/paradox_logo.png'),
                         ),
-                        minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: const Color.fromRGBO(72, 108, 110, 1),
-                      ),
-                      child: const Text(
-                        'SIGN In',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Create new account',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => const SignUpScreen()));
-                          },
-                          child: const Text(
-                            'Sign Up',
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'PARADOX',
                             style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue,
+                              fontFamily: 'Hermes',
+                              fontSize: 45,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFFFDE34),
+                            ),
+                          ),
+                        ),
+                        textField(
+                          controller: emailController,
+                          labelText: "email",
+                        ),
+                        textField(
+                            controller: passwordController,
+                            labelText: 'password'),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 10),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) {
+                                      return PopScope(
+                                        canPop: false,
+                                        child: Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    });
+                                try {
+                                  print('-------sign in user------');
+
+                                  Dio dio = Dio(BaseOptions(
+                                    responseType: ResponseType.json,
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                    },
+                                  ));
+                                  var data = {
+                                    'email': emailController.text.trim(),
+                                    'password': passwordController.text.trim()
+                                  };
+                                  var response = await http.post(
+                                      Uri.parse(
+                                          'https://paradox-1.onrender.com/api/v1/auth/login'),
+                                      body: data);
+
+                                  print(response);
+                                  // var token = response.data['token'];
+                                  // SharedPreferences pref =
+                                  //     await SharedPreferences.getInstance();
+                                  // pref.setString('token', token);
+
+                                  Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const BottomNavBAR()),
+                                      (route) => false);
+                                } catch (e) {
+                                  print(e);
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(e.toString()),
+                                  ));
+                                  Navigator.pop(context);
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 2, color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor:
+                                  const Color.fromRGBO(72, 108, 110, 1),
+                            ),
+                            child: const Text(
+                              'SIGN In',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * 0.18,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Create new account',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
                               fontWeight: FontWeight.w400,
                             ),
-                          )),
-                    ],
-                  ),
-                ],
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (ctx) => const SignUpScreen()));
+                              },
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -218,7 +235,8 @@ class textField extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           labelText: labelText,
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           border: InputBorder.none,
 
           // border:
