@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:paradox_2024/dio_service.dart';
+import 'package:paradox_2024/local_data.dart';
 
 class leaderboardPage extends StatefulWidget {
   const leaderboardPage({Key? key}) : super(key: key);
@@ -10,6 +13,36 @@ class leaderboardPage extends StatefulWidget {
 }
 
 class _leaderboardPageState extends State<leaderboardPage> {
+  List leaderboard = [];
+  var loading = false;
+  Future<void> getLeaderboard() async {
+    setState(() {
+      loading = true;
+    });
+    print("--------getting leaderboard--------");
+    String? name = await SharedData().getname();
+    String? roll = await SharedData().getroll();
+
+    String? uid = "${roll}${name}";
+    print(uid);
+
+    Response res = await DioService().post('leaderboard/lead', {'uid': uid});
+    List jsonList = res.data["data"]['leaderboard'];
+    print(jsonList);
+
+    setState(() {
+      leaderboard = jsonList;
+      loading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLeaderboard();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -73,123 +106,128 @@ class _leaderboardPageState extends State<leaderboardPage> {
               height: screenHeight * 0.1,
               child: Image.asset('assets/leaderboard_text.png'),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Stack(
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.6,
-                    width: double.infinity,
-                    child: Image.asset(
-                      'assets/leaderboard_bg.png',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  Positioned(
-                    top: screenHeight * 0.18,
-                    left: screenWidth * 0.08,
-                    child: Text(
-                      'Aman',
-                      style: TextStyle(
-                        fontFamily: 'Hermes',
-                        fontSize: screenHeight * 0.03,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: screenHeight * 0.21,
-                    left: screenWidth * 0.28,
-                    child: Text(
-                      'Devender',
-                      style: TextStyle(
-                        fontFamily: 'Hermes',
-                        fontSize: screenHeight * 0.03,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: screenHeight * 0.17,
-                    left: screenWidth * 0.58,
-                    child: Text(
-                      'Rishab',
-                      style: TextStyle(
-                        fontFamily: 'Hermes',
-                        fontSize: screenHeight * 0.03,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: screenHeight * 0.27,
-                    left: screenWidth * 0.08,
-                    child: SizedBox(
-                      height: screenHeight * 0.4,
-                      width: screenWidth * 0.8,
-                      child: ListView.builder(
-                          itemCount: 7,
-                          itemBuilder: (ctx, idx) {
-                            return Stack(
-                              children: [
-                                Container(
-                                  height: screenHeight * 0.08,
-                                  child: Image.asset(
-                                    'assets/leaderboard_tile.png',
-                                  ),
-                                ),
-                                Positioned(
-                                  top: screenHeight * 0.022,
-                                  left: screenWidth * 0.04,
-                                  child: Row(
+            (loading)
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          height: screenHeight * 0.6,
+                          width: double.infinity,
+                          child: Image.asset(
+                            'assets/leaderboard_bg.png',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        Positioned(
+                          top: screenHeight * 0.18,
+                          left: screenWidth * 0.08,
+                          child: Text(
+                            leaderboard[1]['name'],
+                            style: TextStyle(
+                              fontFamily: 'Hermes',
+                              fontSize: screenHeight * 0.03,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: screenHeight * 0.21,
+                          left: screenWidth * 0.28,
+                          child: Text(
+                            leaderboard[0]['name'] ?? "Aman",
+                            style: TextStyle(
+                              fontFamily: 'Hermes',
+                              fontSize: screenHeight * 0.03,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: screenHeight * 0.17,
+                          left: screenWidth * 0.58,
+                          child: Text(
+                            leaderboard[2]['name'] ?? 'Unkonwn',
+                            style: TextStyle(
+                              fontFamily: 'Hermes',
+                              fontSize: screenHeight * 0.03,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: screenHeight * 0.27,
+                          left: screenWidth * 0.08,
+                          child: SizedBox(
+                            height: screenHeight * 0.4,
+                            width: screenWidth * 0.8,
+                            child: ListView.builder(
+                                itemCount: leaderboard.length,
+                                itemBuilder: (ctx, idx) {
+                                  return Stack(
                                     children: [
-                                      Text(
-                                        idx.toString(),
-                                        style: TextStyle(
-                                          // fontFamily: 'Hermes',
-                                          fontSize: screenHeight * 0.016,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
+                                      Container(
+                                        height: screenHeight * 0.08,
+                                        child: Image.asset(
+                                          'assets/leaderboard_tile.png',
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: screenWidth * 0.21,
-                                      ),
-                                      Text(
-                                        'Aman Gupta',
-                                        style: TextStyle(
-                                          fontFamily: 'Hermes',
-                                          fontSize: screenHeight * 0.022,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                      Positioned(
+                                        top: screenHeight * 0.022,
+                                        left: screenWidth * 0.04,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              idx.toString(),
+                                              style: TextStyle(
+                                                // fontFamily: 'Hermes',
+                                                fontSize: screenHeight * 0.016,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: screenWidth * 0.21,
+                                            ),
+                                            Text(
+                                              leaderboard[idx]['name'] ??
+                                                  'unknown',
+                                              style: TextStyle(
+                                                fontFamily: 'Hermes',
+                                                fontSize: screenHeight * 0.022,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: screenWidth * 0.1,
+                                            ),
+                                            Text(
+                                              " Level : ${leaderboard[idx]['level'].toString()}",
+                                              style: TextStyle(
+                                                // fontFamily: 'Hermes',
+                                                fontSize: screenHeight * 0.02,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: screenWidth * 0.08,
-                                      ),
-                                      Text(
-                                        'Level 1',
-                                        style: TextStyle(
-                                          // fontFamily: 'Hermes',
-                                          fontSize: screenHeight * 0.02,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
+                                      )
                                     ],
-                                  ),
-                                )
-                              ],
-                            );
-                          }),
+                                  );
+                                }),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
+                  )
           ],
         ),
       ),

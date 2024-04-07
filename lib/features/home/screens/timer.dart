@@ -14,6 +14,7 @@ class CountdownScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     DateTime targetDate = DateTime(2024, 4, date, 11);
     Duration difference = targetDate.difference(DateTime.now());
+    int level = (date == 13) ? 1 : 2;
     return Scaffold(
       body: Stack(
         children: [
@@ -47,7 +48,7 @@ class CountdownScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          'LEVEL 1 STARTS IN :',
+                          'LEVEL $level STARTS IN :',
                           style: TextStyle(
                             fontSize: screenHeight * 0.019,
                             color: Color(0xFFFFDE34),
