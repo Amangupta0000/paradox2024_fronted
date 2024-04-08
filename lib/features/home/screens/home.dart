@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paradox_2024/features/home/screens/comingsoon.dart';
-import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
-import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
+import 'package:paradox_2024/features/home/screens/timer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,7 +9,11 @@ class HomeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    DateTime targetDate = DateTime(2024, 4, 12);
+    DateTime targetDate = DateTime(
+      2024,
+      4,
+      12
+    );
     Duration difference = targetDate.difference(DateTime.now());
 
     return Column(
@@ -20,32 +22,6 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(5.0),
           child: Stack(
             children: [
-              Positioned(
-                top: 0,
-                left: 2,
-                child: Text(
-                  'PARADOX',
-                  style: TextStyle(
-                    fontFamily: 'Hermes',
-                    fontSize: screenHeight * 0.07,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff802C95),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 2,
-                left: 0,
-                child: Text(
-                  'PARADOX',
-                  style: TextStyle(
-                    fontFamily: 'Hermes',
-                    fontSize: screenHeight * 0.07,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff802C95),
-                  ),
-                ),
-              ),
               Text(
                 'PARADOX',
                 style: TextStyle(
@@ -68,7 +44,7 @@ class HomeScreen extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => const Question_Screen()));
+                MaterialPageRoute(builder: (ctx) => const CountdownScreen(date: 13,)));
           },
           child: Container(
             height: screenHeight * 0.07,
@@ -97,8 +73,8 @@ class HomeScreen extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (ctx) => const comingsoon()));
+             Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const CountdownScreen(date: 14,)));
           },
           child: Container(
             height: screenHeight * 0.07,
@@ -121,38 +97,6 @@ class HomeScreen extends StatelessWidget {
                   fontSize: screenHeight * 0.024,
                   fontWeight: FontWeight.bold,
                 ),
-              ),
-            ),
-          ),
-        ),
-        SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(screenHeight * 0.01),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(screenHeight * 0.03),
-                color: Colors.grey,
-              ),
-              padding: EdgeInsets.all(screenHeight * 0.007),
-              child: Column(
-                children: [
-                  Text(
-                    'LEVEL 1 STARTS IN :',
-                    style: TextStyle(
-                      fontSize: screenHeight * 0.018,
-                      color: Color(0xFFFFDE34),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.004),
-                  TimerCountdown(
-                    format: CountDownTimerFormat.daysHoursMinutesSeconds,
-                    endTime: DateTime.now().add(difference),
-                    onEnd: () {
-                      print("Timer finished");
-                    },
-                  ),
-                ],
               ),
             ),
           ),
