@@ -151,8 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           shape: RoundedRectangleBorder(
                             side:
                                 const BorderSide(width: 2, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(
-                                8.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           minimumSize: const Size(double.infinity, 50),
                           backgroundColor:
@@ -208,9 +207,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 Future<String> createUser(String email, String name, String roll) async {
   try {
     print('------------------user profile creating---------------');
-  //  var uid = roll + name;
+    var uid = roll + name;
     var data = {
-      'uid': roll,
+      'uid': uid,
       "name": name,
       'email': email,
       'roll': roll,
@@ -242,8 +241,7 @@ class textField extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[600],
-        borderRadius:
-            BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(30.0),
         border: Border.all(
           color: Colors.white,
           width: 2.0,
@@ -270,7 +268,8 @@ class textField extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           labelText: labelText,
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           border: InputBorder.none,
 
           // border:
