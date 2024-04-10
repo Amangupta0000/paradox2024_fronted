@@ -38,40 +38,76 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double fontSize = MediaQuery.of(context).size.width * 0.06;
+
     return Material(
-        child: Stack(
-      children: [
-        const Positioned.fill(
-          child: Image(
-            image: AssetImage('assets/bg.png'),
-            fit: BoxFit.fill,
+      child: Stack(
+        children: [
+          const Positioned.fill(
+            child: Image(
+              image: AssetImage('assets/bg.png'),
+              fit: BoxFit.fill,
+            ),
           ),
-        ),
-        SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 250,
-                child: Image.asset('assets/paradox_logo.png'),
-              ),
-              const Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'PARADOX',
-                  style: TextStyle(
-                    fontFamily: 'Hermes',
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFFFDE34),
-                  ),
+          Center(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 250,
+                      child: Image.asset('assets/paradox_logo.png'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 0,
+                            left: 2,
+                            child: Text(
+                              'PARADOX',
+                              style: TextStyle(
+                                fontFamily: 'Hermes',
+                                fontSize: 45,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff802C95),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 2,
+                            left: 0,
+                            child: Text(
+                              'PARADOX',
+                              style: TextStyle(
+                                fontFamily: 'Hermes',
+                                fontSize: 45,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff802C95),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'PARADOX',
+                            style: TextStyle(
+                              fontFamily: 'Hermes',
+                              fontSize: 45,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFFFDE34),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ))
-      ],
-    ));
+        ],
+      ),
+    );
   }
 }
