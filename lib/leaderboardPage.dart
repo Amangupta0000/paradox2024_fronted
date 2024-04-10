@@ -26,7 +26,7 @@ class _leaderboardPageState extends State<leaderboardPage> {
     String? uid = "${roll}${name}";
     print(uid);
 
-    Response res = await DioService().post('leaderboard/lead', {'uid': uid});
+    Response res = await DioService().post('leaderboard/lead', {});
     List jsonList = res.data["data"]['leaderboard'];
     print(jsonList);
 
