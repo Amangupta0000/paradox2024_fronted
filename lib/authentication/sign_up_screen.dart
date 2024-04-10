@@ -1,14 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paradox_2024/authentication/sign_in_screen.dart';
 import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:paradox_2024/dio_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  const SignUpScreen({Key? key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -20,9 +18,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -32,130 +30,162 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Stack(children: <Widget>[
-        const Positioned.fill(
-          //
-          child: Image(
-            image: AssetImage('assets/bg.png'),
-            fit: BoxFit.fill,
+      body: Stack(
+        children: <Widget>[
+          Positioned.fill(
+            child: Image(
+              image: AssetImage('assets/bg.png'),
+              fit: BoxFit.fill,
+            ),
           ),
-        ),
-        SafeArea(
-          child: SingleChildScrollView(
+          SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(screenSize.width * 0.04),
               child: Form(
                 key: formKey,
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 250,
+                      height: screenSize.height * 0.3,
                       child: Image.asset('assets/paradox_logo.png'),
                     ),
-                    const Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'PARADOX',
-                        style: TextStyle(
-                          fontFamily: 'Hermes',
-                          fontSize: 45,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFFFDE34),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            top: 0,
+                            left: 2,
+                            child: Text(
+                              'PARADOX',
+                              style: TextStyle(
+                                fontFamily: 'Hermes',
+                                fontSize: screenSize.height * 0.05,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff802C95),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 2,
+                            left: 0,
+                            child: Text(
+                              'PARADOX',
+                              style: TextStyle(
+                                fontFamily: 'Hermes',
+                                fontSize: screenSize.height * 0.05,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xff802C95),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'PARADOX',
+                            style: TextStyle(
+                              fontFamily: 'Hermes',
+                              fontSize: screenSize.height * 0.05,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFFFDE34),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    textField(
+                    SizedBox(height: screenSize.height * 0.025,),
+                    TextField(
                       controller: usernameController,
-                      labelText: "useraname",
+                      labelText: "username",
                     ),
-                    textField(
+                    TextField(
                       controller: rollNoController,
                       labelText: "roll number",
                     ),
-                    textField(
+                    TextField(
                       controller: emailController,
                       labelText: "email",
                     ),
-                    textField(
-                        controller: passwordController, labelText: 'password'),
+                    TextField(
+                      controller: passwordController,
+                      labelText: 'password',
+                    ),
+                    SizedBox(height: screenSize.height * 0.02,),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 40, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.width * 0.1,
+                          vertical: screenSize.height * 0.01),
                       child: ElevatedButton(
                         onPressed: () async {
                           if (formKey.currentState!.validate()) {
                             showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return const PopScope(
-                                    canPop: false,
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  );
-                                });
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return const PopScope(
+                                  canPop: false,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              },
+                            );
                             try {
-                              print('-------sign up user------');
-
-                              Dio dio = Dio(BaseOptions(
-                                responseType: ResponseType.json,
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                },
-                              ));
+                              Dio dio = Dio(
+                                BaseOptions(
+                                  responseType: ResponseType.json,
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                ),
+                              );
                               var data = {
                                 'email': emailController.text.trim(),
                                 'password': passwordController.text.trim()
                               };
                               Response response = await dio.post(
-                                  'https://paradox-1.onrender.com/api/v1/auth/signup',
-                                  data: data);
-
-                              print(response.data);
+                                'https://paradox-1.onrender.com/api/v1/auth/signup',
+                                data: data,
+                              );
                               var token = response.data['token'];
                               SharedPreferences pref =
-                                  await SharedPreferences.getInstance();
+                              await SharedPreferences.getInstance();
                               pref.setString('token', token);
                               pref.setString(
                                   'name', usernameController.text.trim());
                               pref.setString(
                                   'roll', rollNoController.text.trim());
                               var res = await createUser(
-                                  emailController.text.trim(),
-                                  usernameController.text.trim(),
-                                  rollNoController.text.trim());
-                              print(res);
+                                emailController.text.trim(),
+                                usernameController.text.trim(),
+                                rollNoController.text.trim(),
+                              );
                               if (res == "Success") {
                                 Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BottomNavBAR()),
-                                    (route) => false);
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const BottomNavBAR(),
+                                  ),
+                                      (route) => false,
+                                );
                               } else {
                                 Navigator.pop(context);
                               }
                             } catch (e) {
                               Navigator.pop(context);
-                              print(e);
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(e.toString()),
-                              ));
+                                  .showSnackBar(SnackBar(content: Text(e.toString())));
                             }
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            side:
-                                const BorderSide(width: 2, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8.0),
+                            side: BorderSide(width: screenSize.width * 0.005, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(screenSize.width * 0.02),
                           ),
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor:
-                              const Color.fromRGBO(72, 108, 110, 1),
+                          minimumSize: Size(double.infinity, screenSize.height * 0.06),
+                          backgroundColor: const Color.fromRGBO(72, 108, 110, 1),
                         ),
                         child: const Text(
                           'SIGN UP',
@@ -179,35 +209,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => const SignInScreen()));
-                            },
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            )),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => const SignInScreen(),
+                            ));
+                          },
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-        )
-      ]),
+        ],
+      ),
     );
   }
 }
 
 Future<String> createUser(String email, String name, String roll) async {
   try {
-    print('------------------user profile creating---------------');
-    var uid = roll + name;
     var data = {
       'uid': uid,
       "name": name,
@@ -219,38 +249,39 @@ Future<String> createUser(String email, String name, String roll) async {
       'displayPicture': null
     };
     Response res = await DioService().post('auth/createUser', data);
-    print(res.data);
     return 'Success';
   } catch (e) {
-    print(e);
     return 'error';
   }
 }
 
-class textField extends StatelessWidget {
-  const textField({
-    super.key,
+class TextField extends StatelessWidget {
+  const TextField({
+    Key? key,
     required this.controller,
     required this.labelText,
-  });
+  }) : super(key: key);
+
   final TextEditingController controller;
   final String labelText;
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[600],
-        borderRadius: BorderRadius.circular(30.0),
+        borderRadius: BorderRadius.circular(screenSize.width * 0.08),
         border: Border.all(
           color: Colors.white,
-          width: 2.0,
+          width: screenSize.width * 0.005,
         ),
       ),
-      margin: const EdgeInsets.all(10.0),
+      margin: EdgeInsets.all(screenSize.width * 0.02),
       child: TextFormField(
-        style: const TextStyle(
-          fontSize: 20,
+        style: TextStyle(
+          fontSize: screenSize.width * 0.05,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
@@ -262,17 +293,14 @@ class textField extends StatelessWidget {
         },
         controller: controller,
         decoration: InputDecoration(
-          hintStyle: const TextStyle(
-            fontSize: 20,
+          hintStyle: TextStyle(
+            fontSize: screenSize.width * 0.05,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
           labelText: labelText,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          contentPadding: EdgeInsets.symmetric(vertical: screenSize.width * 0.03, horizontal: screenSize.width * 0.04),
           border: InputBorder.none,
-
-          // border:
         ),
       ),
     );
