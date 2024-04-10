@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:paradox_2024/features/home/screens/comingsoon.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
@@ -14,7 +14,7 @@ class CountdownScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     DateTime targetDate = DateTime(2024, 4, date, 11);
     Duration difference = targetDate.difference(DateTime.now());
-    int level = (date == 13) ? 1 : 2;
+    int level = (date == 12) ? 1 : 2;
     return Scaffold(
       body: Stack(
         children: [
@@ -60,7 +60,7 @@ class CountdownScreen extends StatelessWidget {
                           format: CountDownTimerFormat.daysHoursMinutesSeconds,
                           endTime: DateTime.now().add(difference),
                           onEnd: () {
-                            if (date == 13) {
+                            if (date == 12) {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (ctx) =>

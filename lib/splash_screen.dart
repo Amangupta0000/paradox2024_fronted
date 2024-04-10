@@ -22,6 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _checkTokenAndNavigate() async {
     String? token = await SharedData().getToken();
+    print(token);
     if (token != null) {
       // Token is valid, navigate to HomeScreen
       Navigator.of(context).pushReplacement(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:paradox_2024/features/home/screens/comingsoon.dart';
+import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
 import 'package:paradox_2024/features/home/screens/timer.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,11 +11,7 @@ class HomeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    DateTime targetDate = DateTime(
-      2024,
-      4,
-      12
-    );
+    DateTime targetDate = DateTime(2024, 4, 10);
     Duration difference = targetDate.difference(DateTime.now());
 
     return Column(
@@ -43,8 +41,16 @@ class HomeScreen extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => const CountdownScreen(date: 13,)));
+            print(difference.inDays);
+            if (difference.inDays <= 0) {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (ctx) => const Question_Screen()));
+            } else {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => const CountdownScreen(
+                        date: 12,
+                      )));
+            }
           },
           child: Container(
             height: screenHeight * 0.07,
@@ -73,8 +79,15 @@ class HomeScreen extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-             Navigator.of(context).push(
-                MaterialPageRoute(builder: (ctx) => const CountdownScreen(date: 14,)));
+            if (difference.inDays <= 0) {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (ctx) => const comingsoon()));
+            } else {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => const CountdownScreen(
+                        date: 13,
+                      )));
+            }
           },
           child: Container(
             height: screenHeight * 0.07,
