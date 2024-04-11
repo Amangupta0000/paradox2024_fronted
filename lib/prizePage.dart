@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class prizePage extends StatelessWidget {
@@ -57,16 +58,51 @@ class prizePage extends StatelessWidget {
           SizedBox(
             height: screenHeight * 0.1,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: screenHeight * 0.5,
-              child: Image.asset(
-                'assets/prizes.png',
-                fit: BoxFit.contain,
+          Stack(children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: screenHeight * 0.5,
+                child: Image.asset(
+                  'assets/prizes.png',
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-          ),
+            Positioned(
+                top: screenHeight * 0.22,
+                left: screenWidth * 0.35,
+                child: Text(
+                  'Prize 1',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenHeight * 0.03,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'Orbitron'),
+                )),
+            Positioned(
+                top: screenHeight * 0.34,
+                left: screenWidth * 0.08,
+                child: Text(
+                  'Prize 2',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenHeight * 0.025,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'Orbitron'),
+                )),
+            Positioned(
+                top: screenHeight * 0.38,
+                left: screenWidth * 0.665,
+                child: Text(
+                  'Prize 3',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenHeight * 0.025,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'Orbitron'),
+                )),
+          ]),
         ],
       ),
     );
