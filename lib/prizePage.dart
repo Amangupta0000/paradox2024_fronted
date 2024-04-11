@@ -71,12 +71,12 @@ class prizePage extends StatelessWidget {
             ),
             Positioned(
                 top: screenHeight * 0.22,
-                left: screenWidth * 0.35,
+                left: screenWidth * 0.33,
                 child: Text(
-                  'Prize 1',
+                  'Rs. 2000',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: screenHeight * 0.03,
+                      fontSize: screenHeight * 0.025,
                       fontWeight: FontWeight.w900,
                       fontFamily: 'Orbitron'),
                 )),
@@ -84,7 +84,7 @@ class prizePage extends StatelessWidget {
                 top: screenHeight * 0.34,
                 left: screenWidth * 0.08,
                 child: Text(
-                  'Prize 2',
+                  'Rs. 1200',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: screenHeight * 0.025,
@@ -93,9 +93,9 @@ class prizePage extends StatelessWidget {
                 )),
             Positioned(
                 top: screenHeight * 0.38,
-                left: screenWidth * 0.665,
+                left: screenWidth * 0.65,
                 child: Text(
-                  'Prize 3',
+                  'Rs. 800',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: screenHeight * 0.025,

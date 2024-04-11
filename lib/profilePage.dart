@@ -115,10 +115,10 @@ class _profilePageState extends State<profilePage> {
                         radius: height * 0.06,
                       )),
                   Positioned(
-                      top: height * 0.19,
+                      top: height * 0.195,
                       // left: width * 0.3,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width * 0.3),
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.42),
                         child: Text(
                           profiledata.name,
                           // "KLaskshya xbdsk",
