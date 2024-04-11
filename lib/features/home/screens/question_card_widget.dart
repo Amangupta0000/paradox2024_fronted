@@ -21,11 +21,14 @@ class Question_Screen extends StatefulWidget {
 
 class _Question_ScreenState extends State<Question_Screen> {
   bool loading = false;
-  bool loadingHint = false;
+
   String? question;
   String? image;
   String? hint;
+  int? id;
   bool isHintUse = false;
+  bool isHintAvailable = false;
+  var score;
   TextEditingController answerController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   Future<void> getQuestions() async {
@@ -53,8 +56,17 @@ class _Question_ScreenState extends State<Question_Screen> {
         // questionList = jsonList.map((e) => QuestionModel.fromJson(e)).toList();
 
         setState(() {
+          if (response.data["data"]["nextQuestion"]["hint"] != null) {
+            print("isHintAvailable");
+
+            isHintAvailable = true;
+            hint = response.data["data"]["nextQuestion"]["hint"];
+            isHintUse = true;
+          }
           question = response.data["data"]["nextQuestion"]["question"];
           image = response.data["data"]["nextQuestion"]["image"];
+          id = response.data["data"]["nextQuestion"]["questionNo"];
+          score = response.data["data"]["nextQuestion"]["score"];
           loading = false;
         });
       }
@@ -67,35 +79,29 @@ class _Question_ScreenState extends State<Question_Screen> {
   }
 
   Future<void> getHints() async {
-    setState(() {
-      loadingHint = true;
-    });
     try {
-      print("-------------getting questions--------------------");
+      print("-------------getting hints--------------------");
       String? name = await SharedData().getname();
       String? roll = await SharedData().getroll();
 
       String? uid = "${roll}${name}";
-      Response response = await DioService().post('level1/hint', {"uid": uid});
+      print(id);
+      Response response = await DioService()
+          .post('level1/hint', {"id": id.toString(), "uid": uid});
 
-      var res = response.data;
+      var res = response.data["data"];
       print(res);
       setState(() {
+        hint = res["nextQuestion"]["hint"];
+
         isHintUse = true;
-        loadingHint = false;
       });
     } catch (e) {
-      setState(() {
-        loadingHint = false;
-      });
       print(e);
     }
   }
 
   Future<void> sumbitQuestions(String answer) async {
-    setState(() {
-      loading = true;
-    });
     try {
       print("-------------submitting questions--------------------");
       String? name = await SharedData().getname();
@@ -109,19 +115,37 @@ class _Question_ScreenState extends State<Question_Screen> {
       if (res["message"] == "Level Finished") {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (ctx) => LevelCompleteScreen()));
+      } else if (res["message"] == "Answer is not correct") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Oops Incorrect!...Try again'),
+        ));
       } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Well done...Correct answer!!'),
+        ));
         setState(() {
+          if (response.data["data"]["nextQuestion"]["hint"] != null) {
+            print("isHintAvailable");
+
+            isHintAvailable = true;
+            hint = response.data["data"]["nextQuestion"]["hint"];
+            isHintUse = true;
+          }
           question = response.data["data"]["nextQuestion"]["question"];
           image = response.data["data"]["nextQuestion"]["image"];
+          id = response.data["data"]["nextQuestion"]["questionNo"];
+          score = response.data["data"]["nextQuestion"]["score"];
           answerController.clear();
-          loading = false;
+
+          isHintUse = false;
+          isHintAvailable = false;
         });
       }
     } catch (e) {
       print(e);
-      setState(() {
-        loading = false;
-      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Some error occured  '),
+      ));
     }
   }
 
@@ -162,26 +186,22 @@ class _Question_ScreenState extends State<Question_Screen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 8),
                               child: Stack(children: [
-                                Image.asset('assets/question_bg.png'),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'Q1: ',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      question!,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  height: height * 0.13,
+                                  width: double.infinity,
+                                  child: Image.asset(
+                                    'assets/question_bg.png',
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                                Text(
+                                  "Qu.$id : ${question!}",
+                                  softWrap: true,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ]),
                             ),
@@ -237,6 +257,29 @@ class _Question_ScreenState extends State<Question_Screen> {
                                   child: Row(
                                     children: [
                                       Text(
+                                        'Score :',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        score ?? "",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
                                         'Hint :',
                                         style: TextStyle(
                                           fontSize: 20,
@@ -253,23 +296,47 @@ class _Question_ScreenState extends State<Question_Screen> {
                                                 fontWeight: FontWeight.w400,
                                               ),
                                             )
-                                          : ElevatedButton(
-                                              onPressed: () async {
-                                                await getHints();
-                                              },
-                                              child: Text("Get Hint"),
-                                              style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      width: 2,
-                                                      color: Colors.grey),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0), // Set the border radius to zero
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20),
+                                              child: ElevatedButton(
+                                                onPressed: () async {
+                                                  showDialog(
+                                                      context: context,
+                                                      barrierDismissible: false,
+                                                      builder: (context) {
+                                                        return PopScope(
+                                                            canPop: false,
+                                                            child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator()));
+                                                      });
+                                                  await getHints();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "Get Hint",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
                                                 ),
-                                                minimumSize: Size(80, 50),
-                                                backgroundColor: Color.fromRGBO(
-                                                    72, 108, 110, 1),
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        width: 2,
+                                                        color: Colors.grey),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0), // Set the border radius to zero
+                                                  ),
+                                                  minimumSize: Size(80, 40),
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          72, 108, 110, 1),
+                                                ),
                                               ),
                                             )
                                     ],
@@ -321,14 +388,20 @@ class _Question_ScreenState extends State<Question_Screen> {
                                   child: ElevatedButton(
                                     onPressed: () async {
                                       if (formKey.currentState!.validate()) {
+                                        showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (context) {
+                                              return PopScope(
+                                                  canPop: false,
+                                                  child: Center(
+                                                      child:
+                                                          CircularProgressIndicator()));
+                                            });
                                         await sumbitQuestions(
                                             answerController.text.trim());
-
+                                        Navigator.of(context).pop();
                                         // Optionally show feedback to the user
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text('Correct!'),
-                                        ));
                                       }
                                     },
                                     child: Text(

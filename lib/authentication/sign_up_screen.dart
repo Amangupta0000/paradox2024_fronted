@@ -94,7 +94,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(height: screenSize.height * 0.025,),
+                    SizedBox(
+                      height: screenSize.height * 0.025,
+                    ),
                     TextField(
                       controller: usernameController,
                       labelText: "username",
@@ -111,7 +113,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: passwordController,
                       labelText: 'password',
                     ),
-                    SizedBox(height: screenSize.height * 0.02,),
+                    SizedBox(
+                      height: screenSize.height * 0.02,
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: screenSize.width * 0.1,
@@ -150,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               );
                               var token = response.data['token'];
                               SharedPreferences pref =
-                              await SharedPreferences.getInstance();
+                                  await SharedPreferences.getInstance();
                               pref.setString('token', token);
                               pref.setString(
                                   'name', usernameController.text.trim());
@@ -162,30 +166,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 rollNoController.text.trim(),
                               );
                               if (res == "Success") {
+                                var token = response.data['token'];
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
+                                pref.setString('token', token);
+                                pref.setString(
+                                    'name', usernameController.text.trim());
+                                pref.setString(
+                                    'roll', rollNoController.text.trim());
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => const BottomNavBAR(),
                                   ),
-                                      (route) => false,
+                                  (route) => false,
                                 );
                               } else {
                                 Navigator.pop(context);
                               }
                             } catch (e) {
                               Navigator.pop(context);
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text(e.toString())));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())));
                             }
                           }
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(width: screenSize.width * 0.005, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(screenSize.width * 0.02),
+                            side: BorderSide(
+                                width: screenSize.width * 0.005,
+                                color: Colors.grey),
+                            borderRadius:
+                                BorderRadius.circular(screenSize.width * 0.02),
                           ),
-                          minimumSize: Size(double.infinity, screenSize.height * 0.06),
-                          backgroundColor: const Color.fromRGBO(72, 108, 110, 1),
+                          minimumSize:
+                              Size(double.infinity, screenSize.height * 0.06),
+                          backgroundColor:
+                              const Color.fromRGBO(72, 108, 110, 1),
                         ),
                         child: const Text(
                           'SIGN UP',
@@ -238,6 +255,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 Future<String> createUser(String email, String name, String roll) async {
   try {
+    var uid = roll + name;
     var data = {
       'uid': uid,
       "name": name,
@@ -299,7 +317,9 @@ class TextField extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           labelText: labelText,
-          contentPadding: EdgeInsets.symmetric(vertical: screenSize.width * 0.03, horizontal: screenSize.width * 0.04),
+          contentPadding: EdgeInsets.symmetric(
+              vertical: screenSize.width * 0.03,
+              horizontal: screenSize.width * 0.04),
           border: InputBorder.none,
         ),
       ),

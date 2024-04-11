@@ -16,24 +16,32 @@ class _leaderboardPageState extends State<leaderboardPage> {
   List leaderboard = [];
   var loading = false;
   Future<void> getLeaderboard() async {
-    setState(() {
-      loading = true;
-    });
-    print("--------getting leaderboard--------");
-    String? name = await SharedData().getname();
-    String? roll = await SharedData().getroll();
+    try {
+      setState(() {
+        loading = true;
+      });
+      print("--------getting leaderboard--------");
+      String? name = await SharedData().getname();
+      String? roll = await SharedData().getroll();
 
-    String? uid = "${roll}${name}";
-    print(uid);
+      String? uid = "${roll}${name}";
+      print(uid);
 
-    Response res = await DioService().post('leaderboard/lead', {});
-    List jsonList = res.data["data"]['leaderboard'];
-    print(jsonList);
+      Response res = await DioService().post('leaderboard/lead', {
+        "uid":uid
+      });
+      List jsonList = res.data["data"]['leaderboard'];
+      print(jsonList);
 
-    setState(() {
-      leaderboard = jsonList;
-      loading = false;
-    });
+      setState(() {
+        leaderboard = jsonList;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   @override
