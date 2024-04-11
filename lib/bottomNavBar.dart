@@ -15,21 +15,13 @@ class BottomNavBAR extends StatefulWidget {
 class _BottomNavBARState extends State<BottomNavBAR> {
   int selectedIndex = 0;
 
-  void updateSelectedVav(int idx) {
+  void updateSelectedNav(int idx) {
     if (selectedIndex != idx) {
       setState(() {
         selectedIndex = idx;
       });
     }
   }
-
-  List bottomNavBarItemAssetList = const [
-    'assets/bottom_nav_bar_icons/home.png',
-    'assets/bottom_nav_bar_icons/leaderboard.png',
-    'assets/bottom_nav_bar_icons/rules.png',
-    'assets/bottom_nav_bar_icons/prize.png',
-    'assets/bottom_nav_bar_icons/profile.png',
-  ];
 
   List<Widget> pages = [
     HomeScreen(),
@@ -42,7 +34,7 @@ class _BottomNavBARState extends State<BottomNavBAR> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -58,31 +50,48 @@ class _BottomNavBARState extends State<BottomNavBAR> {
         ],
       ),
       bottomNavigationBar: Container(
-        height: height * 0.1,
+        height: height * 0.08,
         color: Colors.black,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ...List.generate(
-              bottomNavBarItemAssetList.length,
-                  (index) {
-                return GestureDetector(
-                  onTap: () {
-                    updateSelectedVav(index);
-                  },
-                  child: SizedBox(
-                    height: height * 0.08,
-                    child: Opacity(
-                      opacity: selectedIndex == index ? 1 : 0.5,
-                      child: Image.asset(bottomNavBarItemAssetList[index]),
+            for (int index = 0; index < pages.length; index++)
+              GestureDetector(
+                onTap: () {
+                  updateSelectedNav(index);
+                },
+                child: SizedBox(
+                  height: height * 0.07,
+                  child: Opacity(
+                    opacity: selectedIndex == index ? 1 : 0.5,
+                    child: Icon(
+                      _getIconData(index),
+                      size: height * 0.06,
+                      color: Colors.white,
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              ),
           ],
         ),
       ),
     );
+  }
+
+  IconData _getIconData(int index) {
+    switch (index) {
+      case 0:
+        return Icons.home_rounded;
+      case 1:
+        return Icons.leaderboard_rounded;
+      case 2:
+        return Icons.rule_sharp;
+      case 3:
+        return Icons.emoji_events_rounded;
+      case 4:
+        return Icons.person_rounded;
+      default:
+        return Icons.home;
+    }
   }
 }
