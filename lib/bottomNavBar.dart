@@ -24,11 +24,11 @@ class _BottomNavBARState extends State<BottomNavBAR> {
   }
 
   List bottomNavBarItemAssetList = const [
-    'assets/bootom_nav_bar_icons/home.png',
-    'assets/bootom_nav_bar_icons/leaderboard.png',
-    'assets/bootom_nav_bar_icons/rules.png',
-    'assets/bootom_nav_bar_icons/prize.png',
-    'assets/bootom_nav_bar_icons/profile.png',
+    'assets/bottom_nav_bar_icons/home.png',
+    'assets/bottom_nav_bar_icons/leaderboard.png',
+    'assets/bottom_nav_bar_icons/rules.png',
+    'assets/bottom_nav_bar_icons/prize.png',
+    'assets/bottom_nav_bar_icons/profile.png',
   ];
 
   List<Widget> pages = [
@@ -53,7 +53,7 @@ class _BottomNavBARState extends State<BottomNavBAR> {
             ),
           ),
           SafeArea(
-            child: pages[selectedIndex], // Display selected page
+            child: pages[selectedIndex],
           ),
         ],
       ),
