@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:paradox_2024/dio_service.dart';
 import 'package:paradox_2024/features/home/model/profile_model.dart';
 import 'package:paradox_2024/local_data.dart';
+import 'package:paradox_2024/utils/loading.dart';
 
 class profilePage extends StatefulWidget {
   const profilePage({super.key});
@@ -14,6 +15,7 @@ class profilePage extends StatefulWidget {
 class _profilePageState extends State<profilePage> {
   late ProfileModel profiledata;
   var loading = false;
+  String? userRank;
   Future<void> getprofile() async {
     setState(() {
       loading = true;
@@ -30,6 +32,7 @@ class _profilePageState extends State<profilePage> {
     print(json);
     profiledata = ProfileModel.fromJson(json);
     setState(() {
+      userRank = json["userPosition"].toString();
       loading = false;
     });
     print(profiledata);
@@ -91,8 +94,13 @@ class _profilePageState extends State<profilePage> {
           ),
         ),
         (loading)
-            ? Center(
-                child: CircularProgressIndicator(),
+            ? Column(
+                children: [
+                  SizedBox(
+                    height: height * 0.33,
+                  ),
+                  DataLoader(),
+                ],
               )
             : Stack(
                 children: [
@@ -133,7 +141,7 @@ class _profilePageState extends State<profilePage> {
                       top: height * 0.29,
                       left: width * 0.25,
                       child: Text(
-                        '#2             Leaderboard',
+                        '# $userRank            Leaderboard',
                         style: TextStyle(
                             fontSize: height * 0.02,
                             fontWeight: FontWeight.w500,

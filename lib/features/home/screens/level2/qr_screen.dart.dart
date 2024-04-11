@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
-class comingsoon extends StatefulWidget {
-  const comingsoon({super.key});
+class QRScreen extends StatefulWidget {
+  const QRScreen({super.key});
 
   @override
-  State<comingsoon> createState() => _comingsoonState();
+  State<QRScreen> createState() => _QRScreenState();
 }
 
-class _comingsoonState extends State<comingsoon> {
+class _QRScreenState extends State<QRScreen> {
   String result = "";
   @override
   Widget build(BuildContext context) {

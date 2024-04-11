@@ -1,16 +1,10 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:paradox_2024/dio_service.dart';
-
-import 'package:paradox_2024/features/home/model/question_model.dart';
-import 'package:paradox_2024/features/home/screens/home.dart';
 import 'package:paradox_2024/features/home/screens/level1_complete_screen.dart';
 import 'package:paradox_2024/local_data.dart';
+import 'package:paradox_2024/utils/loading.dart';
 
 class Question_Screen extends StatefulWidget {
   const Question_Screen({super.key});
@@ -185,9 +179,7 @@ class _Question_ScreenState extends State<Question_Screen> {
             ),
           ),
           (loading && question == null)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
+              ? DataLoader()
               : SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -196,25 +188,29 @@ class _Question_ScreenState extends State<Question_Screen> {
                         key: formKey,
                         child: Column(
                           children: [
+                            SizedBox(height: height*0.01,),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 8),
                               child: Stack(children: [
                                 Container(
-                                  height: height * 0.13,
+                                  height: height * 0.09,
                                   width: double.infinity,
                                   child: Image.asset(
                                     'assets/question_bg.png',
                                     fit: BoxFit.fitHeight,
                                   ),
                                 ),
-                                Text(
-                                  "Qu.$id : ${question!}",
-                                  softWrap: true,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Qu.$id : ${question!}",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                      fontSize: height * 0.022,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                               ]),
@@ -254,8 +250,8 @@ class _Question_ScreenState extends State<Question_Screen> {
                                                   CircularProgressIndicator(),
                                             ),
                                         errorWidget: (context, url, error) {
-                                          return Image.asset(
-                                              "assets/paradox_logo.png");
+                                          return Text(
+                                              " Some error is occured on getting the image ! Check your internet connection..");
                                         }),
                                   ),
                                 ),
@@ -271,9 +267,9 @@ class _Question_ScreenState extends State<Question_Screen> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        'Score :',
+                                        ' Your Score : ',
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: height * 0.02,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -322,17 +318,16 @@ class _Question_ScreenState extends State<Question_Screen> {
                                                       builder: (context) {
                                                         return PopScope(
                                                             canPop: false,
-                                                            child: Center(
-                                                                child:
-                                                                    CircularProgressIndicator()));
+                                                            child:
+                                                                DataLoader());
                                                       });
                                                   await getHints();
                                                   Navigator.pop(context);
                                                 },
                                                 child: Text(
                                                   "Get Hint",
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
+                                                  style: TextStyle(
+                                                    fontSize: height * 0.02,
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.w400,
                                                   ),
@@ -346,7 +341,9 @@ class _Question_ScreenState extends State<Question_Screen> {
                                                         BorderRadius.circular(
                                                             8.0), // Set the border radius to zero
                                                   ),
-                                                  minimumSize: Size(80, 40),
+                                                  minimumSize: Size(
+                                                      width * 0.01,
+                                                      height * 0.04),
                                                   backgroundColor:
                                                       Color.fromRGBO(
                                                           72, 108, 110, 1),
@@ -358,7 +355,7 @@ class _Question_ScreenState extends State<Question_Screen> {
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[600],
+                                    color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(
                                         30.0), // Adjust the radius as needed
                                     border: Border.all(
@@ -381,13 +378,13 @@ class _Question_ScreenState extends State<Question_Screen> {
                                       }
                                     },
                                     controller: answerController,
-                                    decoration: const InputDecoration(
-                                      hintStyle: TextStyle(
+                                    decoration: InputDecoration(
+                                      labelStyle: TextStyle(
                                         fontSize: 20,
-                                        color: Colors.white,
+                                        color: Colors.grey[400],
                                         fontWeight: FontWeight.bold,
                                       ),
-                                      hintText: 'What do you think?',
+                                      labelText: 'What do you think?',
                                       contentPadding: EdgeInsets.symmetric(
                                           vertical: 12, horizontal: 15),
                                       border: InputBorder.none,
@@ -408,9 +405,7 @@ class _Question_ScreenState extends State<Question_Screen> {
                                             builder: (context) {
                                               return PopScope(
                                                   canPop: false,
-                                                  child: Center(
-                                                      child:
-                                                          CircularProgressIndicator()));
+                                                  child: DataLoader());
                                             });
                                         await sumbitQuestions(
                                             answerController.text.trim());

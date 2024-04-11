@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paradox_2024/dio_service.dart';
 import 'package:paradox_2024/local_data.dart';
+import 'package:paradox_2024/utils/loading.dart';
 
 class leaderboardPage extends StatefulWidget {
   const leaderboardPage({Key? key}) : super(key: key);
@@ -27,9 +28,7 @@ class _leaderboardPageState extends State<leaderboardPage> {
       String? uid = "${roll}${name}";
       print(uid);
 
-      Response res = await DioService().post('leaderboard/lead', {
-        "uid":uid
-      });
+      Response res = await DioService().post('leaderboard/lead', {"uid": uid});
       List jsonList = res.data["data"]['leaderboard'];
       print(jsonList);
 
@@ -115,8 +114,13 @@ class _leaderboardPageState extends State<leaderboardPage> {
               child: Image.asset('assets/leaderboard_text.png'),
             ),
             (loading)
-                ? const Center(
-                    child: CircularProgressIndicator(),
+                ? Column(
+                    children: [
+                      SizedBox(
+                        height: screenHeight * 0.28,
+                      ),
+                      DataLoader(),
+                    ],
                   )
                 : Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -178,56 +182,62 @@ class _leaderboardPageState extends State<leaderboardPage> {
                             child: ListView.builder(
                                 itemCount: leaderboard.length,
                                 itemBuilder: (ctx, idx) {
-                                  return Stack(
-                                    children: [
-                                      Container(
-                                        height: screenHeight * 0.08,
-                                        child: Image.asset(
-                                          'assets/leaderboard_tile.png',
+                                  if (idx + 2 < leaderboard.length)
+                                    return Stack(
+                                      children: [
+                                        Container(
+                                          height: screenHeight * 0.08,
+                                          child: Image.asset(
+                                            'assets/leaderboard_tile.png',
+                                          ),
                                         ),
-                                      ),
-                                      Positioned(
-                                        top: screenHeight * 0.022,
-                                        left: screenWidth * 0.04,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              idx.toString(),
-                                              style: TextStyle(
-                                                // fontFamily: 'Hermes',
-                                                fontSize: screenHeight * 0.015,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
+                                        Positioned(
+                                          top: screenHeight * 0.029,
+                                          left: screenWidth * 0.041,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                (idx + 4).toString(),
+                                                style: TextStyle(
+                                                  // fontFamily: 'Hermes',
+                                                  fontSize:
+                                                      screenHeight * 0.015,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: screenWidth * 0.21,
-                                            ),
-                                            Text(
-                                              leaderboard[idx]['name'] ??
-                                                  'unknown',
-                                              style: TextStyle(
-                                                fontFamily: 'Orbitron',
-                                                fontSize: screenHeight * 0.015,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
+                                              SizedBox(
+                                                width: screenWidth * 0.21,
                                               ),
-                                            ),
-                                            SizedBox(width: screenWidth * 0.05,),
-                                            Text(
-                                              " Level : ${leaderboard[idx]['level'].toString()}",
-                                              style: TextStyle(
-                                                fontFamily: 'Orbitron',
-                                                fontSize: screenHeight * 0.015,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
+                                              Text(
+                                                leaderboard[idx + 2]['name'] ??
+                                                    'unknown',
+                                                style: TextStyle(
+                                                  fontFamily: 'Orbitron',
+                                                  fontSize:
+                                                      screenHeight * 0.015,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  );
+                                              SizedBox(
+                                                width: screenWidth * 0.05,
+                                              ),
+                                              Text(
+                                                " Score : ${leaderboard[idx + 2]['score'].toString()}",
+                                                style: TextStyle(
+                                                  fontFamily: 'Orbitron',
+                                                  fontSize:
+                                                      screenHeight * 0.015,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    );
                                 }),
                           ),
                         ),
