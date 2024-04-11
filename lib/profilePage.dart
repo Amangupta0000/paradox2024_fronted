@@ -118,12 +118,12 @@ class _profilePageState extends State<profilePage> {
                       top: height * 0.19,
                       // left: width * 0.3,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width * 0.2),
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.3),
                         child: Text(
                           profiledata.name,
                           // "KLaskshya xbdsk",
                           style: TextStyle(
-                              fontSize: height * 0.027,
+                              fontSize: height * 0.02,
                               color: Colors.white,
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Orbitron'),

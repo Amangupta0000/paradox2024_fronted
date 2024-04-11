@@ -9,6 +9,8 @@ import 'package:paradox_2024/dio_service.dart';
 
 import 'package:paradox_2024/features/home/model/question_model.dart';
 import 'package:paradox_2024/features/home/screens/home.dart';
+import 'package:paradox_2024/features/home/screens/level1_complete_screen.dart';
+import 'package:paradox_2024/local_data.dart';
 
 class Question_Screen extends StatefulWidget {
   const Question_Screen({super.key});
@@ -18,10 +20,15 @@ class Question_Screen extends StatefulWidget {
 }
 
 class _Question_ScreenState extends State<Question_Screen> {
-  List<QuestionModel> questionList = [];
-  int questionIndex = 0;
-  late int lastIndex;
   bool loading = false;
+
+  String? question;
+  String? image;
+  String? hint;
+  int? id;
+  bool isHintUse = false;
+  bool isHintAvailable = false;
+  var score;
   TextEditingController answerController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   Future<void> getQuestions() async {
@@ -30,16 +37,39 @@ class _Question_ScreenState extends State<Question_Screen> {
     });
     try {
       print("-------------getting questions--------------------");
-      Response response = await DioService().get('ques/form');
-      print(response.data);
-      List<dynamic> jsonList = response.data;
+      String? name = await SharedData().getname();
+      String? roll = await SharedData().getroll();
 
-      questionList = jsonList.map((e) => QuestionModel.fromJson(e)).toList();
+      String? uid = "${roll}${name}";
+      Response response = await DioService().post('level1/ques', {"uid": uid});
 
-      setState(() {
-        lastIndex = questionList.length;
-        loading = false;
-      });
+      var res = response.data;
+
+      if (res["message"] == "Level Finished") {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (ctx) => LevelCompleteScreen()));
+      }
+      // List<dynamic> jsonList = response.data;
+      else {
+        print(response.data["data"]["nextQuestion"]["question"]);
+
+        // questionList = jsonList.map((e) => QuestionModel.fromJson(e)).toList();
+
+        setState(() {
+          if (response.data["data"]["nextQuestion"]["hint"] != null) {
+            print("isHintAvailable");
+
+            isHintAvailable = true;
+            hint = response.data["data"]["nextQuestion"]["hint"];
+            isHintUse = true;
+          }
+          question = response.data["data"]["nextQuestion"]["question"];
+          image = response.data["data"]["nextQuestion"]["image"];
+          id = response.data["data"]["nextQuestion"]["questionNo"];
+          score = response.data["data"]["nextQuestion"]["score"];
+          loading = false;
+        });
+      }
     } catch (e) {
       print(e);
       setState(() {
@@ -48,43 +78,76 @@ class _Question_ScreenState extends State<Question_Screen> {
     }
   }
 
-  Future<void> sumbitQuestions(QuestionModel question) async {
-    setState(() {
-      loading = true;
-    });
+  Future<void> getHints() async {
+    try {
+      print("-------------getting hints--------------------");
+      String? name = await SharedData().getname();
+      String? roll = await SharedData().getroll();
+
+      String? uid = "${roll}${name}";
+      print(id);
+      Response response = await DioService()
+          .post('level1/hint', {"id": id.toString(), "uid": uid});
+
+      var res = response.data["data"];
+      print(res);
+      setState(() {
+        hint = res["nextQuestion"]["hint"];
+
+        isHintUse = true;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> sumbitQuestions(String answer) async {
     try {
       print("-------------submitting questions--------------------");
-      var data = {
-        "questionNo": question.id,
-        "question": question.question,
-        "image": question.image,
-        "answer": question.answer,
-        "hint": question.hint
-      };
-      var response = await DioService().post('ques/submit', data);
-      print(response);
-      print("question index  is === $questionIndex");
-      setState(() {
-        loading = false;
-        if (questionIndex + 1 > lastIndex) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (ctx) => BottomNavBAR()),
-              (route) => false);
-        } else {
-          questionIndex++;
-          print("question index  is === $questionIndex");
-        }
-        answerController.clear();
-      });
+      String? name = await SharedData().getname();
+      String? roll = await SharedData().getroll();
+
+      String? uid = "${roll}${name}";
+      var data = {"answer": answer, "uid": uid};
+      var response = await DioService().post('level1/answer', data);
+      var res = response.data;
+      print(response.data);
+      if (res["message"] == "Level Finished") {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (ctx) => LevelCompleteScreen()));
+      } else if (res["message"] == "Answer is not correct") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Oops Incorrect!...Try again'),
+        ));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Well done...Correct answer!!'),
+        ));
+        setState(() {
+          if (response.data["data"]["nextQuestion"]["hint"] != null) {
+            print("isHintAvailable");
+
+            isHintAvailable = true;
+            hint = response.data["data"]["nextQuestion"]["hint"];
+            isHintUse = true;
+          }
+          question = response.data["data"]["nextQuestion"]["question"];
+          image = response.data["data"]["nextQuestion"]["image"];
+          id = response.data["data"]["nextQuestion"]["questionNo"];
+          score = response.data["data"]["nextQuestion"]["score"];
+          answerController.clear();
+
+          isHintUse = false;
+          isHintAvailable = false;
+        });
+      }
     } catch (e) {
       print(e);
-      setState(() {
-        loading = false;
-      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Some error occured  '),
+      ));
     }
   }
-
-  // Function to show congratulations pop-up
 
   @override
   void initState() {
@@ -98,241 +161,280 @@ class _Question_ScreenState extends State<Question_Screen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: (questionIndex == questionList.length)
-          ? Container()
-          : Stack(
-              children: [
-                const Positioned.fill(
-                  //
-                  child: Image(
-                    image: AssetImage('assets/bg.png'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                (loading)
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: formKey,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 8),
-                                    child: Stack(children: [
-                                      Image.asset('assets/question_bg.png'),
-                                      Row(
-                                        children: [
-                                          const Text(
-                                            'Q1: ',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            questionList[questionIndex]
-                                                .question,
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ]),
+      body: Stack(
+        children: [
+          const Positioned.fill(
+            //
+            child: Image(
+              image: AssetImage('assets/bg.png'),
+              fit: BoxFit.fill,
+            ),
+          ),
+          (loading)
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 8),
+                              child: Stack(children: [
+                                Container(
+                                  height: height * 0.13,
+                                  width: double.infinity,
+                                  child: Image.asset(
+                                    'assets/question_bg.png',
+                                    fit: BoxFit.fitHeight,
                                   ),
-                                  const SizedBox(
-                                    height: 20,
+                                ),
+                                Text(
+                                  "Qu.$id : ${question!}",
+                                  softWrap: true,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
                                   ),
-                                  Stack(
+                                ),
+                              ]),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Stack(
+                              children: [
+                                SizedBox(
+                                    // height: height * 0.5,
+                                    // width: width * 0.8,
+                                    child: Image.asset(
+                                  'assets/question_screen.png',
+                                  fit: BoxFit.cover,
+                                )),
+                                Positioned(
+                                  top: height * 0.055,
+                                  left: width * 0.1,
+                                  child: SizedBox(
+                                    height: height * 0.28,
+                                    width: width * 0.64,
+                                    child: CachedNetworkImage(
+                                        imageUrl: image!,
+                                        imageBuilder: (context, imageProvider) {
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                  alignment: Alignment.center),
+                                            ),
+                                          );
+                                        },
+                                        placeholder: (context, url) => Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                        errorWidget: (context, url, error) {
+                                          return Image.asset(
+                                              "assets/paradox_logo.png");
+                                        }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.2,
+                            ),
+                            Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
                                     children: [
-                                      SizedBox(
-                                          // height: height * 0.5,
-                                          // width: width * 0.8,
-                                          child: Image.asset(
-                                        'assets/question_screen.png',
-                                        fit: BoxFit.cover,
-                                      )),
-                                      Positioned(
-                                        top: height * 0.055,
-                                        left: width * 0.1,
-                                        child: SizedBox(
-                                          height: height * 0.28,
-                                          width: width * 0.64,
-                                          child: CachedNetworkImage(
-                                              imageUrl:
-                                                  questionList[questionIndex]
-                                                      .image,
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: imageProvider,
-                                                        fit: BoxFit.cover,
-                                                        alignment:
-                                                            Alignment.center),
-                                                  ),
-                                                );
-                                              },
-                                              placeholder: (context, url) =>
-                                                  Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                              errorWidget:
-                                                  (context, url, error) {
-                                                return Image.asset(
-                                                    "assets/paradox_logo.png");
-                                              }),
+                                      Text(
+                                        'Score :',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                      Text(
+                                        score ?? "",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: height * 0.2,
-                                  ),
-                                  Column(
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Hint :',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              'The place Known for Coffee',
+                                      Text(
+                                        'Hint :',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      (isHintUse)
+                                          ? Text(
+                                              hint ?? "",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w400,
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[600],
-                                          borderRadius: BorderRadius.circular(
-                                              30.0), // Adjust the radius as needed
-                                          border: Border.all(
-                                            color: Colors
-                                                .white, // You can change the border color as needed
-                                            width: 2.0,
-                                          ),
-                                        ),
-                                        margin: const EdgeInsets.all(10.0),
-                                        child: TextFormField(
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.trim().isEmpty) {
-                                              return "Please type answer";
-                                            }
-                                            if (value.trim().toLowerCase() !=
-                                                questionList[questionIndex]
-                                                    .answer
-                                                    .trim()
-                                                    .toLowerCase()) {
-                                              return "Wrong answer";
-                                            }
-                                          },
-                                          controller: answerController,
-                                          decoration: const InputDecoration(
-                                            hintStyle: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            hintText: 'What do you think?',
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 12,
-                                                    horizontal: 15),
-                                            border: InputBorder.none,
-
-                                            // border:
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 40, vertical: 10),
-                                        child: ElevatedButton(
-                                          onPressed: () async {
-                                            bool isCorrect = answerController
-                                                    .text
-                                                    .trim()
-                                                    .toLowerCase() ==
-                                                questionList[questionIndex]
-                                                    .answer
-                                                    .trim()
-                                                    .toLowerCase();
-                                            if (formKey.currentState!
-                                                .validate()) {
-                                              await sumbitQuestions(
-                                                  questionList[questionIndex]);
-
-                                              // Optionally show feedback to the user
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                content: Text(isCorrect
-                                                    ? 'Correct!'
-                                                    : 'Incorrect..'),
-                                              ));
-                                            }
-                                          },
-                                          child: Text(
-                                            'SUMBIT',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              side: BorderSide(
-                                                  width: 2, color: Colors.grey),
-                                              borderRadius: BorderRadius.circular(
-                                                  8.0), // Set the border radius to zero
-                                            ),
-                                            minimumSize:
-                                                Size(double.infinity, 50),
-                                            backgroundColor:
-                                                Color.fromRGBO(72, 108, 110, 1),
-                                          ),
-                                        ),
-                                      )
+                                            )
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20),
+                                              child: ElevatedButton(
+                                                onPressed: () async {
+                                                  showDialog(
+                                                      context: context,
+                                                      barrierDismissible: false,
+                                                      builder: (context) {
+                                                        return PopScope(
+                                                            canPop: false,
+                                                            child: Center(
+                                                                child:
+                                                                    CircularProgressIndicator()));
+                                                      });
+                                                  await getHints();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "Get Hint",
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    side: BorderSide(
+                                                        width: 2,
+                                                        color: Colors.grey),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0), // Set the border radius to zero
+                                                  ),
+                                                  minimumSize: Size(80, 40),
+                                                  backgroundColor:
+                                                      Color.fromRGBO(
+                                                          72, 108, 110, 1),
+                                                ),
+                                              ),
+                                            )
                                     ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[600],
+                                    borderRadius: BorderRadius.circular(
+                                        30.0), // Adjust the radius as needed
+                                    border: Border.all(
+                                      color: Colors
+                                          .white, // You can change the border color as needed
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  margin: const EdgeInsets.all(10.0),
+                                  child: TextFormField(
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    validator: (value) {
+                                      if (value == null ||
+                                          value.trim().isEmpty) {
+                                        return "Please type answer";
+                                      }
+                                    },
+                                    controller: answerController,
+                                    decoration: const InputDecoration(
+                                      hintStyle: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      hintText: 'What do you think?',
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 15),
+                                      border: InputBorder.none,
+
+                                      // border:
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 40, vertical: 10),
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        showDialog(
+                                            context: context,
+                                            barrierDismissible: false,
+                                            builder: (context) {
+                                              return PopScope(
+                                                  canPop: false,
+                                                  child: Center(
+                                                      child:
+                                                          CircularProgressIndicator()));
+                                            });
+                                        await sumbitQuestions(
+                                            answerController.text.trim());
+                                        Navigator.of(context).pop();
+                                        // Optionally show feedback to the user
+                                      }
+                                    },
+                                    child: Text(
+                                      'SUMBIT',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            width: 2, color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(
+                                            8.0), // Set the border radius to zero
+                                      ),
+                                      minimumSize: Size(double.infinity, 50),
+                                      backgroundColor:
+                                          Color.fromRGBO(72, 108, 110, 1),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
                         ),
                       ),
-              ],
-            ),
+                    ),
+                  ),
+                ),
+        ],
+      ),
     );
   }
 }
