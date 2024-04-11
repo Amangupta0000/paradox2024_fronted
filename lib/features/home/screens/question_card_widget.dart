@@ -65,6 +65,7 @@ class _Question_ScreenState extends State<Question_Screen> {
           }
           question = response.data["data"]["nextQuestion"]["question"];
           image = response.data["data"]["nextQuestion"]["image"];
+          print(image);
           id = response.data["data"]["nextQuestion"]["questionNo"];
           score = response.data["data"]["nextQuestion"]["score"];
           loading = false;
@@ -72,6 +73,9 @@ class _Question_ScreenState extends State<Question_Screen> {
       }
     } catch (e) {
       print(e);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Some error occured  '),
+      ));
       setState(() {
         loading = false;
       });
@@ -90,13 +94,23 @@ class _Question_ScreenState extends State<Question_Screen> {
           .post('level1/hint', {"id": id.toString(), "uid": uid});
 
       var res = response.data["data"];
-      print(res);
-      setState(() {
-        hint = res["nextQuestion"]["hint"];
+      if (response.data['message'] ==
+          "Not enough points available to unlock the hint") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Not enough points available to unlock the hint'),
+        ));
+      } else {
+        setState(() {
+          hint = res["nextQuestion"]["hint"];
+          score = response.data["data"]["nextQuestion"]["score"];
 
-        isHintUse = true;
-      });
+          isHintUse = true;
+        });
+      }
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Some error occured  '),
+      ));
       print(e);
     }
   }
@@ -170,7 +184,7 @@ class _Question_ScreenState extends State<Question_Screen> {
               fit: BoxFit.fill,
             ),
           ),
-          (loading)
+          (loading && question == null)
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
@@ -219,10 +233,10 @@ class _Question_ScreenState extends State<Question_Screen> {
                                 )),
                                 Positioned(
                                   top: height * 0.055,
-                                  left: width * 0.1,
+                                  left: width * 0.11,
                                   child: SizedBox(
                                     height: height * 0.28,
-                                    width: width * 0.64,
+                                    width: width * 0.65,
                                     child: CachedNetworkImage(
                                         imageUrl: image!,
                                         imageBuilder: (context, imageProvider) {
@@ -230,7 +244,7 @@ class _Question_ScreenState extends State<Question_Screen> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                   image: imageProvider,
-                                                  fit: BoxFit.cover,
+                                                  fit: BoxFit.contain,
                                                   alignment: Alignment.center),
                                             ),
                                           );
@@ -248,7 +262,7 @@ class _Question_ScreenState extends State<Question_Screen> {
                               ],
                             ),
                             SizedBox(
-                              height: height * 0.2,
+                              height: height * 0.002,
                             ),
                             Column(
                               children: [
@@ -265,7 +279,7 @@ class _Question_ScreenState extends State<Question_Screen> {
                                         ),
                                       ),
                                       Text(
-                                        score ?? "",
+                                        score.toString() ?? "",
                                         style: TextStyle(
                                           fontSize: 18,
                                           color: Colors.white,
