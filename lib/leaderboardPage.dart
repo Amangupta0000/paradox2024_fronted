@@ -132,38 +132,38 @@ class _leaderboardPageState extends State<leaderboardPage> {
                         ),
                         Positioned(
                           top: screenHeight * 0.18,
-                          left: screenWidth * 0.08,
+                          left: screenWidth * 0.17,
                           child: Text(
                             leaderboard[1]['name'] ?? "unknown",
                             style: TextStyle(
-                              fontFamily: 'Hermes',
-                              fontSize: screenHeight * 0.03,
+                              fontFamily: 'Orbitron',
+                              fontSize: screenHeight * 0.02,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
                         ),
                         Positioned(
-                          top: screenHeight * 0.21,
-                          left: screenWidth * 0.28,
+                          top: screenHeight * 0.2,
+                          left: screenWidth * 0.37,
                           child: Text(
                             leaderboard[0]['name'] ?? "Unknown",
                             style: TextStyle(
-                              fontFamily: 'Hermes',
-                              fontSize: screenHeight * 0.03,
+                              fontFamily: 'Orbitron',
+                              fontSize: screenHeight * 0.02,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
                         ),
                         Positioned(
-                          top: screenHeight * 0.17,
+                          top: screenHeight * 0.18,
                           left: screenWidth * 0.58,
                           child: Text(
                             leaderboard[2]['name'] ?? 'Unkonwn',
                             style: TextStyle(
-                              fontFamily: 'Hermes',
-                              fontSize: screenHeight * 0.03,
+                              fontFamily: 'Orbitron',
+                              fontSize: screenHeight * 0.02,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -195,7 +195,7 @@ class _leaderboardPageState extends State<leaderboardPage> {
                                               idx.toString(),
                                               style: TextStyle(
                                                 // fontFamily: 'Hermes',
-                                                fontSize: screenHeight * 0.016,
+                                                fontSize: screenHeight * 0.015,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black,
                                               ),
@@ -207,20 +207,18 @@ class _leaderboardPageState extends State<leaderboardPage> {
                                               leaderboard[idx]['name'] ??
                                                   'unknown',
                                               style: TextStyle(
-                                                fontFamily: 'Hermes',
-                                                fontSize: screenHeight * 0.022,
+                                                fontFamily: 'Orbitron',
+                                                fontSize: screenHeight * 0.015,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            SizedBox(
-                                              width: screenWidth * 0.1,
-                                            ),
+                                            SizedBox(width: screenWidth * 0.05,),
                                             Text(
                                               " Level : ${leaderboard[idx]['level'].toString()}",
                                               style: TextStyle(
-                                                // fontFamily: 'Hermes',
-                                                fontSize: screenHeight * 0.02,
+                                                fontFamily: 'Orbitron',
+                                                fontSize: screenHeight * 0.015,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black,
                                               ),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox_2024/features/home/screens/comingsoon.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
@@ -21,6 +20,32 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(5.0),
           child: Stack(
             children: [
+              Positioned(
+                top: 0,
+                left: 2,
+                child: Text(
+                  'PARADOX',
+                  style: TextStyle(
+                    fontFamily: 'Hermes',
+                    fontSize: screenHeight * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff802C95),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 2,
+                left: 0,
+                child: Text(
+                  'PARADOX',
+                  style: TextStyle(
+                    fontFamily: 'Hermes',
+                    fontSize: screenHeight * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff802C95),
+                  ),
+                ),
+              ),
               Text(
                 'PARADOX',
                 style: TextStyle(
