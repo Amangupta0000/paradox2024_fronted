@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:paradox_2024/authentication/sign_up_screen.dart';
 import 'package:paradox_2024/bottomNavBar.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key});
@@ -132,18 +133,23 @@ class _SignInScreenState extends State<SignInScreen> {
                                       'email': emailController.text.trim(),
                                       'password': passwordController.text.trim()
                                     };
-                                    var response = await http.post(
-                                      Uri.parse(
-                                          'https://paradox-1.onrender.com/api/v1/auth/login'),
-                                      body: data,
+                                    Response response = await dio.post(
+                                      'https://paradox-1.onrender.com/api/v1/auth/login',
+                                      data: data,
                                     );
+
                                     print(response);
+                                    var token = response.data['token'];
+                                    SharedPreferences pref =
+                                        await SharedPreferences.getInstance();
+                                    pref.setString('token', token);
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const BottomNavBAR(),
+                                        builder: (context) =>
+                                            const BottomNavBAR(),
                                       ),
-                                          (route) => false,
+                                      (route) => false,
                                     );
                                   } catch (e) {
                                     print(e);
@@ -157,11 +163,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  side: const BorderSide(width: 2, color: Colors.grey),
+                                  side: const BorderSide(
+                                      width: 2, color: Colors.grey),
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 minimumSize: const Size(double.infinity, 50),
-                                backgroundColor: const Color.fromRGBO(72, 108, 110, 1),
+                                backgroundColor:
+                                    const Color.fromRGBO(72, 108, 110, 1),
                               ),
                               child: const Text(
                                 'SIGN IN',
@@ -263,7 +271,8 @@ class textField extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
           labelText: labelText,
-          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
           border: InputBorder.none,
         ),
       ),
