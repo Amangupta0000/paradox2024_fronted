@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paradox_2024/features/home/screens/comingsoon.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
@@ -32,13 +33,48 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(screenHeight * 0.01),
-          child: SizedBox(
-            height: screenHeight * 0.4,
-            child: Image.asset('assets/bootom_nav_bar_icons/score_board.png'),
+        Stack(children: [
+          Padding(
+            padding: EdgeInsets.all(screenHeight * 0.01),
+            child: SizedBox(
+              height: screenHeight * 0.4,
+              child: Image.asset('assets/bottom_nav_bar_icons/score_board.png'),
+            ),
           ),
-        ),
+          Positioned(
+              top: screenHeight * 0.25,
+              left: screenWidth * 0.43,
+              child: Text(
+                'Name 1',
+                style: TextStyle(
+                  color: Colors.white,
+                    fontSize: screenHeight * 0.015,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Orbitron'),
+              )),
+          Positioned(
+              top: screenHeight * 0.28,
+              left: screenWidth * 0.14,
+              child: Text(
+                'Name 2',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenHeight * 0.013,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Orbitron'),
+              )),
+          Positioned(
+              top: screenHeight * 0.305,
+              left: screenWidth * 0.74,
+              child: Text(
+                'Name 3',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenHeight * 0.013,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Orbitron'),
+              )),
+        ]),
         GestureDetector(
           onTap: () {
             print(difference.inDays);
