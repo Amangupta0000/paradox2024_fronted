@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
-import 'package:paradox_2024/features/home/screens/comingsoon.dart';
+import 'package:paradox_2024/features/home/screens/level2/qr_screen.dart.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
 
 class CountdownScreen extends StatelessWidget {
@@ -68,7 +68,7 @@ class CountdownScreen extends StatelessWidget {
                             } else {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (ctx) => const comingsoon()));
+                                      builder: (ctx) => const QRScreen()));
                             }
                           },
                         ),
