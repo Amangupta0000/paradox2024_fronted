@@ -67,7 +67,7 @@ class HomeScreen extends StatelessWidget {
               child: SizedBox(
                 height: screenHeight * 0.4,
                 child:
-                    Image.asset('assets/bottom_nav_bar_icons/score_board.png'),
+                    Image.asset('assets/score_board.png'),
               ),
             ),
             Positioned(

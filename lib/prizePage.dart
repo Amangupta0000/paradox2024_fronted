@@ -93,7 +93,7 @@ class prizePage extends StatelessWidget {
                 )),
             Positioned(
                 top: screenHeight * 0.38,
-                left: screenWidth * 0.65,
+                left: screenWidth * 0.6,
                 child: Text(
                   'Rs. 800',
                   style: TextStyle(
