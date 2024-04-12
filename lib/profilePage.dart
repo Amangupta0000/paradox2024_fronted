@@ -21,10 +21,8 @@ class _profilePageState extends State<profilePage> {
       loading = true;
     });
     print("--------getting profile--------");
-    String? name = await SharedData().getname();
-    String? roll = await SharedData().getroll();
-
-    String? uid = "${roll}${name}";
+   
+    String? uid = await SharedData().getToken();
     print(uid);
 
     Response res = await DioService().post('profile/display', {'uid': uid});

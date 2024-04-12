@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:paradox_2024/local_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class DioService {
   final String baseUrl = 'https://paradox-1.onrender.com/api/v1/';

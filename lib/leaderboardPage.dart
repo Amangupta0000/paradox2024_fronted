@@ -22,10 +22,7 @@ class _leaderboardPageState extends State<leaderboardPage> {
         loading = true;
       });
       print("--------getting leaderboard--------");
-      String? name = await SharedData().getname();
-      String? roll = await SharedData().getroll();
-
-      String? uid = "${roll}${name}";
+    String? uid = await SharedData().getToken();
       print(uid);
 
       Response res = await DioService().post('leaderboard/lead', {"uid": uid});

@@ -156,14 +156,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               SharedPreferences pref =
                                   await SharedPreferences.getInstance();
                               pref.setString('token', token);
-                              pref.setString(
-                                  'name', usernameController.text.trim());
-                              pref.setString(
-                                  'roll', rollNoController.text.trim());
+                            
                               var res = await createUser(
                                 emailController.text.trim(),
                                 usernameController.text.trim(),
                                 rollNoController.text.trim(),
+                                token
                               );
                               if (res == "Success") {
                                 var token = response.data['token'];
@@ -253,9 +251,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 }
 
-Future<String> createUser(String email, String name, String roll) async {
+Future<String> createUser(String email, String name, String roll, String uid) async {
   try {
-    var uid = roll + name;
+   
     var data = {
       'uid': uid,
       "name": name,

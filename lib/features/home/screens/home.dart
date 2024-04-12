@@ -3,6 +3,7 @@ import 'package:paradox_2024/features/home/screens/level2/qr_screen.dart.dart';
 import 'package:paradox_2024/features/home/screens/level2/question_screen.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
 import 'package:paradox_2024/features/home/screens/timer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,8 +13,8 @@ class HomeScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    DateTime level1Time = DateTime(2024, 4, 11, 15);
-    DateTime level2Time = DateTime(2024, 4, 11, 15);
+    DateTime level1Time = DateTime(2024, 4, 12, 11, 30);
+    DateTime level2Time = DateTime(2024, 4, 12, 11, 25);
     Duration difference = level1Time.difference(DateTime.now());
     Duration difference1 = level2Time.difference(DateTime.now());
 
@@ -106,13 +107,15 @@ class HomeScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               print(difference.inHours);
-              if (difference.inHours <= 0) {
+              print(difference.inHours);
+              if (difference.inMinutes <= 0) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (ctx) => const Question_Screen()));
               } else {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => const CountdownScreen(
+                    builder: (ctx) => CountdownScreen(
                           date: 12,
+                          time1: level1Time,
                         )));
               }
             },
@@ -142,14 +145,23 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              if (difference1.inHours <= 0) {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => const Question_Screen_Level2()));
+            onTap: () async {
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              int index = pref.getInt("index") ?? 0;
+              print(difference1.inMinutes);
+              if (difference1.inMinutes <= 0) {
+                if (index < 2) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => const Question_Screen_Level2()));
+                } else {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => const QRScreen()));
+                }
               } else {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => const CountdownScreen(
+                    builder: (ctx) => CountdownScreen(
                           date: 13,
+                          time1: level2Time,
                         )));
               }
             },

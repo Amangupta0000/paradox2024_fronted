@@ -140,9 +140,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
                                     print(response);
                                     var token = response.data['token'];
+
                                     SharedPreferences pref =
                                         await SharedPreferences.getInstance();
                                     pref.setString('token', token);
+
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
@@ -184,7 +186,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: height * 0.2,
+                        height: height * 0.11,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),

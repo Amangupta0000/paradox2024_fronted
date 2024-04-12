@@ -6,14 +6,6 @@ class SharedData {
     String? token = pref.getString('token');
     return token;
   }
-   Future<String?> getname() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    return  pref.getString('name');
-    
-  }
-   Future<String?> getroll() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    return  pref.getString('roll');
-    
-  }
+   
+  
 }

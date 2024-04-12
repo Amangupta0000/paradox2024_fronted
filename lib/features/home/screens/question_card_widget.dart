@@ -31,10 +31,7 @@ class _Question_ScreenState extends State<Question_Screen> {
     });
     try {
       print("-------------getting questions--------------------");
-      String? name = await SharedData().getname();
-      String? roll = await SharedData().getroll();
-
-      String? uid = "${roll}${name}";
+      String? uid = await SharedData().getToken();
       Response response = await DioService().post('level1/ques', {"uid": uid});
 
       var res = response.data;
@@ -79,10 +76,7 @@ class _Question_ScreenState extends State<Question_Screen> {
   Future<void> getHints() async {
     try {
       print("-------------getting hints--------------------");
-      String? name = await SharedData().getname();
-      String? roll = await SharedData().getroll();
-
-      String? uid = "${roll}${name}";
+    String? uid = await SharedData().getToken();
       print(id);
       Response response = await DioService()
           .post('level1/hint', {"id": id.toString(), "uid": uid});
@@ -112,10 +106,7 @@ class _Question_ScreenState extends State<Question_Screen> {
   Future<void> sumbitQuestions(String answer) async {
     try {
       print("-------------submitting questions--------------------");
-      String? name = await SharedData().getname();
-      String? roll = await SharedData().getroll();
-
-      String? uid = "${roll}${name}";
+     String? uid = await SharedData().getToken();
       var data = {"answer": answer, "uid": uid};
       var response = await DioService().post('level1/answer', data);
       var res = response.data;
