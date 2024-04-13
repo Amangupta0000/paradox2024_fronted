@@ -21,10 +21,8 @@ class _profilePageState extends State<profilePage> {
       loading = true;
     });
     print("--------getting profile--------");
-    String? name = await SharedData().getname();
-    String? roll = await SharedData().getroll();
 
-    String? uid = "${roll}${name}";
+    String? uid = await SharedData().getToken();
     print(uid);
 
     Response res = await DioService().post('profile/display', {'uid': uid});
@@ -35,6 +33,7 @@ class _profilePageState extends State<profilePage> {
       userRank = json["userPosition"].toString();
       loading = false;
     });
+
     print(profiledata);
   }
 
@@ -142,7 +141,7 @@ class _profilePageState extends State<profilePage> {
                       top: height * 0.29,
                       left: width * 0.25,
                       child: Text(
-                        '# $userRank            Leaderboard',
+                        '# $userRank  Leaderboard',
                         style: TextStyle(
                             fontSize: height * 0.02,
                             fontWeight: FontWeight.w500,

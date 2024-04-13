@@ -31,14 +31,11 @@ class _Question_ScreenState extends State<Question_Screen> {
     });
     try {
       print("-------------getting questions--------------------");
-      String? name = await SharedData().getname();
-      String? roll = await SharedData().getroll();
-
-      String? uid = "${roll}${name}";
+      String? uid = await SharedData().getToken();
       Response response = await DioService().post('level1/ques', {"uid": uid});
 
       var res = response.data;
-
+      print(res);
       if (res["message"] == "Level Finished") {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (ctx) => LevelCompleteScreen()));
@@ -79,10 +76,7 @@ class _Question_ScreenState extends State<Question_Screen> {
   Future<void> getHints() async {
     try {
       print("-------------getting hints--------------------");
-      String? name = await SharedData().getname();
-      String? roll = await SharedData().getroll();
-
-      String? uid = "${roll}${name}";
+      String? uid = await SharedData().getToken();
       print(id);
       Response response = await DioService()
           .post('level1/hint', {"id": id.toString(), "uid": uid});
@@ -112,10 +106,7 @@ class _Question_ScreenState extends State<Question_Screen> {
   Future<void> sumbitQuestions(String answer) async {
     try {
       print("-------------submitting questions--------------------");
-      String? name = await SharedData().getname();
-      String? roll = await SharedData().getroll();
-
-      String? uid = "${roll}${name}";
+      String? uid = await SharedData().getToken();
       var data = {"answer": answer, "uid": uid};
       var response = await DioService().post('level1/answer', data);
       var res = response.data;
@@ -128,26 +119,31 @@ class _Question_ScreenState extends State<Question_Screen> {
           content: Text('Oops Incorrect!...Try again'),
         ));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Well done...Correct answer!!'),
-        ));
-        setState(() {
-          if (response.data["data"]["nextQuestion"]["hint"] != null) {
-            print("isHintAvailable");
+        if (response.data["data"]["nextQuestion"] == null) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (ctx) => LevelCompleteScreen()));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Well done...Correct answer!!'),
+          ));
+          setState(() {
+            if (response.data["data"]["nextQuestion"]["hint"] != null) {
+              print("isHintAvailable");
 
-            isHintAvailable = true;
-            hint = response.data["data"]["nextQuestion"]["hint"];
-            isHintUse = true;
-          }
-          question = response.data["data"]["nextQuestion"]["question"];
-          image = response.data["data"]["nextQuestion"]["image"];
-          id = response.data["data"]["nextQuestion"]["questionNo"];
-          score = response.data["data"]["nextQuestion"]["score"];
-          answerController.clear();
+              isHintAvailable = true;
+              hint = response.data["data"]["nextQuestion"]["hint"];
+              isHintUse = true;
+            }
+            question = response.data["data"]["nextQuestion"]["question"];
+            image = response.data["data"]["nextQuestion"]["image"];
+            id = response.data["data"]["nextQuestion"]["questionNo"];
+            score = response.data["data"]["nextQuestion"]["score"];
+            answerController.clear();
 
-          isHintUse = false;
-          isHintAvailable = false;
-        });
+            isHintUse = false;
+            isHintAvailable = false;
+          });
+        }
       }
     } catch (e) {
       print(e);
@@ -188,7 +184,9 @@ class _Question_ScreenState extends State<Question_Screen> {
                         key: formKey,
                         child: Column(
                           children: [
-                            SizedBox(height: height*0.01,),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 8),

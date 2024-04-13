@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:paradox_2024/features/home/screens/level2/qr_screen.dart.dart';
+import 'package:paradox_2024/features/home/screens/level2/question_screen.dart';
 import 'package:paradox_2024/features/home/screens/question_card_widget.dart';
 
 class CountdownScreen extends StatelessWidget {
-  const CountdownScreen({super.key, required this.date});
+  const CountdownScreen({super.key, required this.date, required this.time1});
   final int date;
+  final DateTime time1;
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    DateTime targetDate = DateTime(2024, 4, date, 11);
+    DateTime targetDate = time1;
     Duration difference = targetDate.difference(DateTime.now());
     int level = (date == 12) ? 1 : 2;
     return Scaffold(
@@ -68,7 +70,8 @@ class CountdownScreen extends StatelessWidget {
                             } else {
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (ctx) => const QRScreen()));
+                                      builder: (ctx) =>
+                                          const Question_Screen_Level2()));
                             }
                           },
                         ),

@@ -134,15 +134,17 @@ class _SignInScreenState extends State<SignInScreen> {
                                       'password': passwordController.text.trim()
                                     };
                                     Response response = await dio.post(
-                                      'https://paradox-1.onrender.com/api/v1/auth/login',
+                                      'http://64.227.148.84/api/v1/auth/login',
                                       data: data,
                                     );
 
                                     print(response);
                                     var token = response.data['token'];
+
                                     SharedPreferences pref =
                                         await SharedPreferences.getInstance();
                                     pref.setString('token', token);
+
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
@@ -184,7 +186,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: height * 0.2,
+                        height: height * 0.11,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
