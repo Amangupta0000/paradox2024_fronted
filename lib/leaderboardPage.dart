@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:paradox_2024/dio_service.dart';
 import 'package:paradox_2024/local_data.dart';
 import 'package:paradox_2024/utils/loading.dart';
@@ -22,7 +22,7 @@ class _leaderboardPageState extends State<leaderboardPage> {
         loading = true;
       });
       print("--------getting leaderboard--------");
-    String? uid = await SharedData().getToken();
+      String? uid = await SharedData().getToken();
       print(uid);
 
       Response res = await DioService().post('leaderboard/lead', {"uid": uid});
@@ -37,6 +37,10 @@ class _leaderboardPageState extends State<leaderboardPage> {
       setState(() {
         loading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+
     }
   }
 
@@ -132,21 +136,21 @@ class _leaderboardPageState extends State<leaderboardPage> {
                           ),
                         ),
                         Positioned(
-                          top: screenHeight * 0.18,
-                          left: screenWidth * 0.17,
+                          top: screenHeight * 0.182,
+                          left: screenWidth * 0.09,
                           child: Text(
                             leaderboard[1]['name'] ?? "unknown",
                             style: TextStyle(
                               fontFamily: 'Orbitron',
-                              fontSize: screenHeight * 0.02,
+                              fontSize: screenHeight * 0.018,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
                         ),
                         Positioned(
-                          top: screenHeight * 0.2,
-                          left: screenWidth * 0.37,
+                          top: screenHeight * 0.21,
+                          left: screenWidth * 0.33,
                           child: Text(
                             leaderboard[0]['name'] ?? "Unknown",
                             style: TextStyle(
@@ -159,7 +163,7 @@ class _leaderboardPageState extends State<leaderboardPage> {
                         ),
                         Positioned(
                           top: screenHeight * 0.18,
-                          left: screenWidth * 0.58,
+                          left: screenWidth * 0.6,
                           child: Text(
                             leaderboard[2]['name'] ?? 'Unkonwn',
                             style: TextStyle(
@@ -171,11 +175,11 @@ class _leaderboardPageState extends State<leaderboardPage> {
                           ),
                         ),
                         Positioned(
-                          top: screenHeight * 0.27,
-                          left: screenWidth * 0.08,
+                          top: screenHeight * 0.265,
+                          left: screenWidth * 0.05,
                           child: SizedBox(
                             height: screenHeight * 0.4,
-                            width: screenWidth * 0.8,
+                            width: screenWidth * 0.86,
                             child: ListView.builder(
                                 itemCount: leaderboard.length,
                                 itemBuilder: (ctx, idx) {
@@ -189,8 +193,8 @@ class _leaderboardPageState extends State<leaderboardPage> {
                                           ),
                                         ),
                                         Positioned(
-                                          top: screenHeight * 0.029,
-                                          left: screenWidth * 0.041,
+                                          top: screenHeight * 0.026,
+                                          left: screenWidth * 0.038,
                                           child: Row(
                                             children: [
                                               Text(
@@ -198,13 +202,13 @@ class _leaderboardPageState extends State<leaderboardPage> {
                                                 style: TextStyle(
                                                   // fontFamily: 'Hermes',
                                                   fontSize:
-                                                      screenHeight * 0.015,
+                                                      screenHeight * 0.013,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black,
                                                 ),
                                               ),
                                               SizedBox(
-                                                width: screenWidth * 0.21,
+                                                width: screenWidth * 0.16,
                                               ),
                                               Text(
                                                 leaderboard[idx + 2]['name'] ??

@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     DateTime level1Time = DateTime(2024, 4, 12, 11, 30);
-    DateTime level2Time = DateTime(2024, 4, 12, 11, 25);
+    DateTime level2Time = DateTime(2024, 4, 14, 0, 0, 0);
     Duration difference = level1Time.difference(DateTime.now());
     Duration difference1 = level2Time.difference(DateTime.now());
 
@@ -66,8 +66,7 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.all(screenHeight * 0.01),
               child: SizedBox(
                 height: screenHeight * 0.4,
-                child:
-                    Image.asset('assets/score_board.png'),
+                child: Image.asset('assets/score_board.png'),
               ),
             ),
             Positioned(
@@ -150,7 +149,7 @@ class HomeScreen extends StatelessWidget {
               int index = pref.getInt("index") ?? 0;
               print(difference1.inMinutes);
               if (difference1.inMinutes <= 0) {
-                if (index < 2) {
+                if (index < 10) {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => const Question_Screen_Level2()));
                 } else {

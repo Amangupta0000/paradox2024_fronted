@@ -134,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       'password': passwordController.text.trim()
                                     };
                                     Response response = await dio.post(
-                                      'https://paradox-1.onrender.com/api/v1/auth/login',
+                                      'http://64.227.148.84/api/v1/auth/login',
                                       data: data,
                                     );
 

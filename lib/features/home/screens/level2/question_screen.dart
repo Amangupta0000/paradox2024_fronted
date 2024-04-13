@@ -43,6 +43,9 @@ class _Question_Screen_Level2State extends State<Question_Screen_Level2> {
       setState(() {
         loading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
       // Handle error as needed
     }
   }

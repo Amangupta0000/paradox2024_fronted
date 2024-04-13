@@ -149,20 +149,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 'password': passwordController.text.trim()
                               };
                               Response response = await dio.post(
-                                'https://paradox-1.onrender.com/api/v1/auth/signup',
+                                'http://64.227.148.84/api/v1/auth/signup',
                                 data: data,
                               );
                               var token = response.data['token'];
                               SharedPreferences pref =
                                   await SharedPreferences.getInstance();
                               pref.setString('token', token);
-                            
+
                               var res = await createUser(
-                                emailController.text.trim(),
-                                usernameController.text.trim(),
-                                rollNoController.text.trim(),
-                                token
-                              );
+                                  emailController.text.trim(),
+                                  usernameController.text.trim(),
+                                  rollNoController.text.trim(),
+                                  token);
                               if (res == "Success") {
                                 var token = response.data['token'];
                                 SharedPreferences pref =
@@ -184,8 +183,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               }
                             } catch (e) {
                               Navigator.pop(context);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(e.toString())));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                      "Some error occured ${e.toString()}")));
                             }
                           }
                         },
@@ -251,9 +251,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 }
 
-Future<String> createUser(String email, String name, String roll, String uid) async {
+Future<String> createUser(
+    String email, String name, String roll, String uid) async {
   try {
-   
     var data = {
       'uid': uid,
       "name": name,

@@ -96,14 +96,16 @@ class rulesPage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
+                  Center( 
                     child: Text(
                       'Instructions:',
                       style: TextStyle(
@@ -120,7 +122,7 @@ class rulesPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10.0),
                   Text(
-                    '2. Level 1 Gameplay: Participants will have _ hours, starting from _ a.m. 12/04/2024 until _ p.m. 12/04/2024 to complete level 1 and achieve the highest score possible. Participants will be awarded points for each successfully solved puzzle. The top 50 candidates with the highest scores will qualify for level 2.',
+                    '2. Level 1 Gameplay: Participants will have 19 hours, starting from 5 p.m. 12/04/2024 until 12 p.m. 13/04/2024 to complete level 1 and achieve the highest score possible. Participants will be awarded points for each successfully solved puzzle. The top 50 candidates with the highest scores will qualify for level 2.',
                     style: TextStyle(fontSize: 18.0, color: Colors.white),
                   ),
                   SizedBox(height: 10.0),
